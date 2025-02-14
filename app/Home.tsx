@@ -27,7 +27,7 @@ export default function Home() {
           resizeMode="contain"
         />
         <Text className="text-green-600 text-lg font-bold mt-4">
-          Appalachian
+          Appalachian test
         </Text>
         <Text className="text-green-600 text-lg font-bold">Trash-B-Gone</Text>
         <ActivityIndicator size="large" color="#22c55e" className="mt-9" />
