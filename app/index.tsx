@@ -1,6 +1,6 @@
 // index.tsx
 import React from "react";
-import AppNavigator from "./AppNavigator";
+import AppNavigator from "./Navigation/AppNavigator";
 import { Stack } from "expo-router";
 export default function App() {
   return (
@@ -10,3 +10,4 @@ export default function App() {
     </>
   );
 }
+
