@@ -47,13 +47,6 @@ export default function SignIn() {
                 Alert.alert("Error", response.data.message || "Sign-in failed. Please try again.");
             }
         } catch (error) {
-            console.error("Sign-in error:", error); //
-
-            if (error.response) {
-                Alert.alert("Error", error.response.data.message || "An error occurred. Please try again.");
-            } else {
-                Alert.alert("Error", "No response from the server. Please check your network connection.");
-            }
         } finally {
             setIsLoading(false);
         }
