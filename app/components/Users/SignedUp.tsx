@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  Alert,
+    View,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    Image,
+    ScrollView,
+    Alert,
 } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import BouncyCheckbox from "react-native-bouncy-checkbox";

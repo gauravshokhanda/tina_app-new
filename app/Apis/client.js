@@ -1,45 +1,9 @@
-{/*import axios from "axios";
-
-// Define the base URL for your API
-const BASE_URL = "http://appalachiantrashbgone.com/wp-json/jwt-auth/v1"; 
-
-// Create an axios instance
-const Client = axios.create({
-    baseURL: BASE_URL,
-    headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-    },
-});
-
-// Define the login function
-const login = async (data) => {
-    try {
-        const response = await Client.post("/token", data); 
-        return response;
-    } catch (error) {
-        throw error;
-    }
-};
-
-const signup = async (data) => {
-    try {
-        const response = await Client.post("/signup", data);
-        return response;
-    } catch (error) {
-        throw error;
-    }
-};
-
-export default {
-    login,
-    signup,  
-};*/}
 import axios from "axios";
 
 // Define the base URLs for your APIs
 const AUTH_BASE_URL = "http://appalachiantrashbgone.com/wp-json/jwt-auth/v1";
 const SIGNUP_BASE_URL = "https://appalachiantrashbgone.com/wp-json/custom/v1";
+const PRODUCT_API_URL = "https://appalachiantrashbgone.com/wp-json/wc/v3/products";
 
 // Create axios instances
 const AuthClient = axios.create({
@@ -58,6 +22,15 @@ const SignupClient = axios.create({
     },
 });
 
+const WooCommerceClient = axios.create({
+    baseURL: PRODUCT_API_URL,
+    headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+    },
+    
+});
+
 // Define the login function
 const login = async (data) => {
     try {
@@ -67,6 +40,7 @@ const login = async (data) => {
         throw error;
     }
 };
+
 
 // Define the signup function
 const signup = async (data) => {
@@ -81,8 +55,21 @@ const signup = async (data) => {
         throw error;
     }
 };
+//Define fetch Product
+const fetchProducts = async () => {
+    try {
+        const response = await WooCommerceClient.get("/products");
+        console.log("Products API Response:", response.data); // Debug log
+        return response;
+    } catch (error) {
+        console.error("Products API Error:", error.response?.data || error.message); // Debug log
+        throw error;
+    }
+};
+
 
 export default {
     login,
-    signup,  
+    signup, 
+    fetchProducts, 
 };
