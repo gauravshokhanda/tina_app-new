@@ -42,16 +42,16 @@ import Client from "../../Apis/client";
         setLoading(true);
 
         try {
-        // Prepare payload (adjust field names based on API requirements)
+        // Prepare payload 
         const payload = {
-            username: trimmedName, // Assuming API expects 'username' instead of 'name'
+            username: trimmedName, 
             email: trimmedEmail,
             password: trimmedPassword,
         };
-        console.log("Sending data to API:", payload); // Debug log
+        console.log("Sending data to API:", payload); 
 
         const response = await Client.signup(payload);
-        console.log("Signup Success:", response.data); // Debug log
+        console.log("Signup Success:", response.data);
 
         if (response.data.success) {
             Alert.alert("Success", "Account created successfully!");
