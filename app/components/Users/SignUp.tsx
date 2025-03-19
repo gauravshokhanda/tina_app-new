@@ -45,15 +45,6 @@ function SignupScreen() {
   }));
 
   const handleSignIn = async () => {
-    const newUser = {
-      name: "New User",
-      email: "newuser@example.com",
-      phoneNumber: "9876543210",
-      address: "456 Elm St",
-      isLoggedIn: true,
-      profileImage: "",
-    };
-    dispatch(setUser(newUser));
     router.push("./SignIn");
   };
 
