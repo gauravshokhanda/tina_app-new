@@ -1,7 +1,10 @@
-{/*import axios from "axios";
+import axios from "axios";
+
+
+
 
 // Define the base URL for your API
-const BASE_URL = "http://appalachiantrashbgone.com/wp-json/jwt-auth/v1"; 
+const BASE_URL = "https://appalachiantrashbgone.com/wp-json";
 
 // Create an axios instance
 const Client = axios.create({
@@ -12,69 +15,21 @@ const Client = axios.create({
     },
 });
 
-// Define the login function
+// Login Function
 const login = async (data) => {
     try {
-        const response = await Client.post("/token", data); 
+        const response = await Client.post("/jwt-auth/v1/token", data);
         return response;
     } catch (error) {
+        console.error("Login API Error:", error.response?.data || error.message);
         throw error;
     }
 };
 
+// Signup Function
 const signup = async (data) => {
     try {
-        const response = await Client.post("/signup", data);
-        return response;
-    } catch (error) {
-        throw error;
-    }
-};
-
-export default {
-    login,
-    signup,  
-};*/}
-import axios from "axios";
-
-// Define the base URLs for your APIs
-const AUTH_BASE_URL = "http://appalachiantrashbgone.com/wp-json/jwt-auth/v1";
-const SIGNUP_BASE_URL = "https://appalachiantrashbgone.com/wp-json/custom/v1";
-
-// Create axios instances
-const AuthClient = axios.create({
-    baseURL: AUTH_BASE_URL,
-    headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-    },
-});
-
-const SignupClient = axios.create({
-    baseURL: SIGNUP_BASE_URL,
-    headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-    },
-});
-
-// Define the login function
-const login = async (data) => {
-    try {
-        const response = await AuthClient.post("/token", data); 
-        return response;
-    } catch (error) {
-        throw error;
-    }
-};
-
-// Define the signup function
-const signup = async (data) => {
-    try {
-      console.log("Signup Request Payload:", data); // Debug log
-      console.log("Signup Request URL:", `${SIGNUP_BASE_URL}/signup`); // Debug log
-        const response = await SignupClient.post("/signup", data);
-      console.log("Signup Response:", response.data); // Debug log
+        const response = await Client.post("/custom/v1/signup", data);
         return response;
     } catch (error) {
         console.error("Signup API Error:", error.response?.data || error.message);
@@ -82,7 +37,26 @@ const signup = async (data) => {
     }
 };
 
+// Get Products Function
+const getProducts = async (token) => {
+    // console.log("token",token)
+    try {
+        const response = await Client.get("/wc/v3/products", {
+            headers: {
+                "Authorization": "Basic " + btoa("ck_14ef07aa2b169178c93dd7cda910d7d7e306ef1b:cs_855830329384328e92c820d1b1d2ff4a8fa2b3ee"),
+                "Content-Type": "application/json"
+            },
+        });
+        // console.log("response data",response.data)
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching products:", error.response?.data || error.message);
+        throw error;
+    }
+};
+
 export default {
     login,
-    signup,  
+    signup,
+    getProducts,
 };
