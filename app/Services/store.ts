@@ -1,4 +1,3 @@
-// store.ts
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -29,15 +28,6 @@ export const rootReducer = combineReducers({
 // Create Persisted Reducer
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
-// Load user data from AsyncStorage when app starts
-AsyncStorage.getItem("user").then((userData) => {
-  if (userData) {
-    const parsedUser = JSON.parse(userData);
-    store.dispatch(loadUser(parsedUser));
-  }
-});
-
-// Configure Store
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
@@ -49,6 +39,22 @@ export const store = configureStore({
 });
 
 export const persistor = persistStore(store);
+
+
+const loadStoredUser = async () => {
+  const userData = await AsyncStorage.getItem("user");
+  if (userData) {
+    const parsedUser = JSON.parse(userData);
+    setTimeout(() => {
+      store.dispatch(loadUser()); 
+    }, 0);
+  }
+};
+
+loadStoredUser(); 
+
+// Types
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+
 export default store;
