@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  ImageSourcePropType,
+  ActivityIndicator
 } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -15,12 +17,17 @@ import { addToCart, removeFromCart } from "../Cart/cartReducer";
 import { setProducts } from "./productReducer";
 import { RootState, AppDispatch } from "../../Services/store";
 import client from "../../Apis/client";
+import Loading from "../../components/Loading/Loading";
 
 interface Product {
   id: number;
   name: string;
-  image: { uri: string } | number;
+  image: ImageSourcePropType;
   price: number;
+}
+
+interface CartItem extends Product {
+  quantity: number;
 }
 
 export default function Products() {
@@ -30,25 +37,27 @@ export default function Products() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-
-
   const dispatch = useDispatch<AppDispatch>();
-  const cart = useSelector((state: RootState) => state.cart.items);
+  const cart = useSelector((state: RootState) => state.cart.items) as CartItem[];
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const productData = await client.getProducts(token);
+        const productData = await client.getProducts(token).catch((err) => {
+          console.error("API Error:", err);
+          return [];
+        });
         // console.log("Fetched Products Data:", productData);
 
         const formattedProducts = productData.map((item: any) => ({
           id: item.id,
           name: item.name || "name",
-          image: item.images?.[0]?.src
-            ? { uri: item.images[0].src }
-            : require("../../../assets/images/placeholder.png"),
+          image:
+            item.images && item.images.length > 0
+              ? { uri: item.images[0].src }
+              : "",
           price: item.price || "N/A",
         }));
-        // console.log("Formatted Products:", formattedProducts);
+        // console.log("Formatted Product:", formattedProducts);
         setProducts(formattedProducts);
       } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -59,53 +68,9 @@ export default function Products() {
 
     fetchProducts();
   }, []);
-  // const products: Product[] = useSelector((state: RootState) => state.products.products);
-
-//   useEffect(() => {
-//     const ItemProduct: Product[] = [
-//       {
-//         id: "1",
-//         price: 74,
-//         name: "6-15 Bags\n13 Gallon",
-//         image: require("../../../assets/images/Bags_13_Gallon_6_15.jpg"),
-//       },
-//       {
-//         id: "2",
-//         price: 139,
-//         name: "18-24 Bags\n13 Gallon",
-//         image: require("../../../assets/images/Bags_13_Gallon_18_24.jpg"),
-//       },
-//       {
-//         id: "3",
-//         price: 101,
-//         name: "16-20 Bags\n13 Gallon",
-//         image: require("../../../assets/images/product2.png"),
-//       },
-//       {
-//         id: "4",
-//         price: 139,
-//         name: "20-24 Bags\n13 Gallon",
-//         image: require("../../../assets/images/product2.png"),
-//       },
-//       {
-//         id: "5",
-//         price: 3.0,
-//         name: "Additional\nBags",
-//         image: require("../../../assets/images/Additional_Bags.jpg"),
-//       },
-//       {
-//         id: "6",
-//         price: 21,
-//         name: "Additional\nBags",
-//         image: require("../../../assets/images/product6.png"),
-//       },
-//     ];
-//     dispatch(setProducts(ItemProduct));
-//   }, [dispatch]);
-
-//   const handleAddToCart = (product: Product) => {
-//     dispatch(addToCart({ ...product, quantity: 1 }));
-//   };
+  const handleAddToCart = (product: Product) => {
+    dispatch(addToCart({ ...product, quantity: 1 }));
+  };
 
   const changeQuantity = (itemId: number, action: "increase" | "decrease") => {
     const product = products.find((p) => p.id === itemId);
@@ -130,6 +95,10 @@ export default function Products() {
     );
     return item ? item.quantity : 0;
   };
+
+  if (loading) {
+    return <Loading />; 
+  }
 
   if (products.length === 0) {
     return (
@@ -239,7 +208,7 @@ export default function Products() {
             ) : (
               <TouchableOpacity
                 className="bg-[#64CA96E5] px-3 py-2 mt-2 rounded-lg flex-row items-center"
-                // onPress={() => handleAddToCart(item)}
+                onPress={() => handleAddToCart(item)}
               >
                 <MaterialIcons name="shopping-cart" size={18} color="white" />
                 <Text className="text-white ml-2">Add to Cart</Text>

@@ -13,6 +13,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import client from "../Apis/client";
 import type { RootState } from "../Services/store";
+import Loading from "../components/Loading/Loading";
 
 interface Product {
   id: number;
@@ -65,6 +66,10 @@ export default function Welcome() {
     { id: 2, name: "Weekly Removal", icon: "autorenew" },
     { id: 3, name: "Service - Recurring", icon: "repeat" },
   ];
+
+  if (loading) {
+    return <Loading />;
+  }
 
   // const products = [
   //     { id: 1, name: "6-15 Bags\n13 gallon", image: require("../../assets/images/Bags_13_Gallon_6_15.jpg") },
@@ -124,9 +129,7 @@ export default function Welcome() {
       <View className="mb-5 px-4">
         <Text className="text-lg font-bold mb-4 pb-2">Products</Text>
 
-        {loading ? (
-          <ActivityIndicator size="large" color="#045B51EE" />
-        ) : (
+      
           <FlatList
             data={products}
             key={"horizontal-list"} 
@@ -153,7 +156,7 @@ export default function Welcome() {
               </TouchableOpacity>
             )}
           />
-        )}
+        
 
         {/* See All Button */}
         <TouchableOpacity
