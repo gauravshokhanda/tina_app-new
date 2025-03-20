@@ -41,7 +41,7 @@ interface Product {
     useEffect(() => {
         const fetchProducts = async () => {
         try {
-            const productData = await client.getProducts(user.token);
+            const productData = await client.getProducts("/wc/v3/products",user.token);
             // console.log("Fetched Products Data:", productData);
             
             const formattedProducts = productData.slice(0,4).map((item: any) => ({
@@ -140,6 +140,10 @@ interface Product {
                 // contentContainerStyle={{ paddingHorizontal: 10 }}
                 renderItem={({ item }) => (
                 <TouchableOpacity
+                onPress={() => router.push({
+                    pathname: "/components/Products/Products",
+                    params: { categoryId: item.id }
+                })}
                     key={item.id}
                     className="bg-white rounded-lg w-36 p-3 items-center  mx-2"
                 >

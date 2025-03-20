@@ -31,6 +31,7 @@ export default function Categories() {
               id: item.id,
               name: item.name || item.title || "Unnamed Category",
               }));
+              console.log("formattedcategory",formattedCategory)
               setCategory(formattedCategory);
           } catch (error) {
               console.error("Failed to fetch Categories:", error);
@@ -90,7 +91,10 @@ export default function Categories() {
           {category.map((items, index) => ( 
             <TouchableOpacity
             key={items.id}
-            onPress={() => router.push(`/components/Products/Products?categoryId=${items.id}`)}
+            onPress={() => router.push({
+              pathname: "/components/Products/Products",
+              params: { categoryId: items.id }
+            })}
             className="bg-[#094b34] p-4 rounded-lg items-center border border-gray-500 mb-4"
         >
             <Text className="text-lg text-white font-semibold">{items.name}</Text>
