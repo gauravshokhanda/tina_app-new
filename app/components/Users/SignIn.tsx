@@ -16,16 +16,16 @@ export default function SignIn() {
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
+    {/*useEffect(() => {
         checkUserLogin();
-    }, []);
+    }, []);*/}
 
-    const checkUserLogin = async () => {
+    {/*const checkUserLogin = async () => {
         const storedUser = await AsyncStorage.getItem("user");
         if (storedUser) {
             router.push("/Screens/Welcome");
         }
-    };
+    };*/}
 
     const handleSignIn = async () => {
         if (!username || !password) {

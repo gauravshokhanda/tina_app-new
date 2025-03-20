@@ -1,3 +1,4 @@
+    // userSlice.ts
     import { createSlice, PayloadAction } from "@reduxjs/toolkit";
     import AsyncStorage from "@react-native-async-storage/async-storage";
     import { AppDispatch, RootState } from "../../Services/store";
@@ -73,8 +74,8 @@
     };
 
     export const clearUser = () => async (dispatch: AppDispatch) => {
-    await AsyncStorage.removeItem("user");
-    dispatch(clearUserState());
+        await AsyncStorage.removeItem("user");
+        dispatch(clearUserState()); 
     };
 
     export const loadUser = () => async (dispatch: AppDispatch) => {
