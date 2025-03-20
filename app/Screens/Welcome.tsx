@@ -28,6 +28,7 @@ interface Product {
     // console.log("User Name:", user);
 
     const [products, setProducts] = useState<Product[]>([]);
+    const [category, setCategory] = useState<Category[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -59,13 +60,38 @@ interface Product {
     type Category = {
         id: number;
         name: string;
+        image: { uri: string } | number;
         icon: keyof typeof MaterialIcons.glyphMap;
     };
-    const categories = [
+    {/*const categories = [
         { id: 1, name: "One Time Pick-Ups", icon: "local-shipping" },
         { id: 2, name: "Weekly Removal", icon: "autorenew" },
         { id: 3, name: "Service - Recurring", icon: "repeat" },
-    ];
+    ];*/}
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+        try {
+            const categoryData = await client.getCategories(user.token);
+            // console.log("Fetched Category Data:", CategoryData);
+            
+            const formattedCategory = categoryData.slice(0,4).map((item: any) => ({
+            id: item.id,
+            name: item.name || "name",
+            image: item.images?.[0]?.src
+                ?  { uri: item.images[0].src } 
+                : require('../../assets/images/always-working-img.jpg'),
+            }));
+            setCategory(formattedCategory);
+        } catch (error) {
+            console.error("Failed to fetch Categories:", error);
+        } finally {
+            setLoading(false);
+        }
+        };
+
+        fetchCategories();
+    }, []);
 
     if (loading) {
         return <Loading />;
@@ -99,32 +125,44 @@ interface Product {
         </View>
 
         {/* Categories Section */}
-        <View className="mb-3 px-4">
-            <Text className="text-lg font-bold mb-2 pb-2 mt-4 ">Categories</Text>
-            <View className="flex-row justify-between gap-3 mb-1">
-            {categories.map((category) => (
+        <View className="mb-5 px-4">
+            <Text className="text-lg font-bold mb-4 pb-2">Categories</Text>
+
+        
+            <FlatList
+                data={category}
+                key={"horizontal-list"} 
+                keyExtractor={(item) => item.id.toString()}
+                horizontal 
+                showsHorizontalScrollIndicator={false}
+                // contentContainerStyle={{ paddingHorizontal: 10 }}
+                renderItem={({ item }) => (
                 <TouchableOpacity
-                key={category.id}
-                className="bg-white p-4 rounded-lg flex-1 items-center gap-1"
+                    key={item.id}
+                    className="bg-white rounded-lg w-36 p-3 items-center  mx-2"
                 >
-                <MaterialIcons
-                    name={category.icon as keyof typeof MaterialIcons.glyphMap}
-                    size={44}
-                    color="green"
-                />
-                <Text className="text-center text-lg font-bold">
-                    {category.name}
-                </Text>
+                    <Image
+                source={item.image}
+                className="w-20 h-20 rounded-lg"
+                resizeMode="contain"
+                onError={() => console.log(`Failed to load image for ${item.name}`)} // Debug image loading
+            />
+                    <Text className="text-center text-md font-bold mt-2 text-[#000c0bee]">
+                    {item.name}
+                    </Text>
                 </TouchableOpacity>
-            ))}
-            </View>
+                )}
+            />
+            {/* See All Button */}
             <TouchableOpacity
             onPress={() => router.push("/constants/Categories")}
-            className="bg-[#045B51EE] p-2 rounded-lg self-end mt-3"
+            className="bg-[#045B51EE] p-3 rounded-lg self-end mt-4"
             >
-            <Text className="text-white">See all →</Text>
+            <Text className="text-white font-bold">See all →</Text>
             </TouchableOpacity>
         </View>
+
+            
 
         <View className="mb-5 px-4">
             <Text className="text-lg font-bold mb-4 pb-2">Products</Text>
@@ -147,10 +185,10 @@ interface Product {
                     className="w-20 h-20 rounded-lg"
                     resizeMode="contain"
                     />
-                    <Text className="text-center text-md font-bold mt-2 text-[#045B51EE]">
+                    <Text className="text-center text-md font-bold mt-2 text-[#000101ee]">
                     {item.name}
                     </Text>
-                    <Text className="text-center text-sm text-[#64CA96] font-semibold mt-1">
+                    <Text className="text-center text-sm text-[#010704] font-semibold mt-1">
                     ${item.price}
                     </Text>
                 </TouchableOpacity>

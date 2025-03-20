@@ -51,7 +51,7 @@ const getProducts = async (token) => {
         throw error;
     }
 };
-const getCategories = async () => {
+const getCategories = async (token) => {
     try {
         const response = await Client.get("/wc/v3/products/categories", {
             headers: {
