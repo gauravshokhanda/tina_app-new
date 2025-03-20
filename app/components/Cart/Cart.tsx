@@ -6,6 +6,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart, clearCart } from "./cartReducer";
 import { RootState } from "../../Services/store";
+import client from "@/app/Apis/client";
 
 export default function Cart() {
     const router = useRouter();
@@ -21,7 +22,26 @@ export default function Cart() {
         }).start();
     }, []);
 
-    const handleRemoveItem = (id: string) => {
+    const handleCheckout = async () => {
+        try {
+            const token = "YOUR_AUTH_TOKEN"; 
+            const cartData = cart.map((item) => ({
+                product_id: item.id,
+                quantity: item.quantity || 1,
+            }));
+    
+            const response = await client.addToCart(token, cartData);
+            console.log("Cart submitted successfully:", response);
+    
+            router.push({ 
+                pathname: "../../constants/Transactions", 
+                params: { cart: encodeURIComponent(JSON.stringify(cart)) }
+            });
+        } catch (error) {
+            console.error("Checkout Error:", error);
+        }
+    };
+    const handleRemoveItem = (id: number) => {
         dispatch(removeFromCart(id));
     };
 
@@ -124,10 +144,7 @@ export default function Cart() {
             </View>
             <TouchableOpacity
             className="bg-[#045B51EE] px-6 py-3 rounded-lg flex-row items-center shadow-md"
-            onPress={() => router.push({ 
-                pathname: "../../constants/Transactions", 
-                params: { cart: encodeURIComponent(JSON.stringify(cart)) }
-            })}
+            onPress={handleCheckout}
             >
             <MaterialIcons name="shopping-cart-checkout" size={20} color="white" />
             <Text className="text-white font-semibold ml-2">Checkout</Text>

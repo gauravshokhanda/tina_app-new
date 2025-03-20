@@ -98,7 +98,7 @@ const LoggedInAccount = () => {
                 <Text className="text-2xl font-bold mt-4 text-gray-800">
                     {loading ? "Loading..." : userData.name}
                 </Text>
-                <Text className="text-gray-600">{loading ? "Fetching..." : userData.email || "Member since Jan-2024"}</Text>
+                <Text className="text-gray-600">{loading ? "Fetching..." : userData.email }</Text>
             </Animated.View>
 
             {/* Menu Sections */}
