@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ImageSourcePropType } from "react-native";
 
 interface CartItem {
-  id: string;
+  id: number;
   name: string;
   price: number;
   quantity: number;
@@ -29,8 +29,8 @@ const cartSlice = createSlice({
         state.items.push(action.payload);
       }
     },
-    removeFromCart: (state, action: PayloadAction<string>) => {
-      state.items = state.items.filter((item) => item.id !== action.payload);
+    removeFromCart: (state, action: PayloadAction<Number>) => {
+      state.items = state.items.filter((item) => item.id !== Number(action.payload));
     },
     clearCart: (state) => {
       state.items = [];

@@ -11,6 +11,7 @@ const LoggedOutAccount = () => {
     const router = useRouter();
     return (
         <View className="flex-1 bg-[#E6F2ED] justify-center items-center px-4">
+            <Stack.Screen options={{ headerShown: false }} />
         <Animated.View entering={FadeIn.duration(600)} className="items-center">
             <Image
             source={require("../../assets/images/loginBear.png")}
@@ -23,7 +24,7 @@ const LoggedOutAccount = () => {
             Log in to access your orders, transactions, and settings.
             </Text>
             <TouchableOpacity
-            onPress={() => router.push("./Users/SignIn")}
+            onPress={() => router.push("../Users/SignIn")}
             className="bg-[#64CA96E5] py-3 px-6 rounded-lg flex-row items-center justify-center mt-8 shadow-md"
             >
             <MaterialIcons name="exit-to-app" size={22} color="white" />
@@ -50,28 +51,22 @@ const LoggedOutAccount = () => {
 
         {/* Header */}
         <Animated.View
-    entering={FadeInUp.duration(500)}
-    className="flex-row items-center justify-between mt-6"
->
-    {/* Left Icon */}
-    <TouchableOpacity
-        onPress={() => router.push("/components/Products/Products")}
-        className="p-2 rounded-full bg-[#64CA96E5] shadow-md"
-    >
-        <MaterialIcons name="arrow-left" size={20} color="white" />
-    </TouchableOpacity>
-
-    {/* Title */}
-    <Text className="text-2xl font-bold text-gray-800">
-        My <Text className="text-green-600">Account</Text>
-    </Text>
-
-    {/* Right Icon */}
-    <TouchableOpacity>
-        <MaterialIcons name="person" size={25} color="#64CA96E5" />
-    </TouchableOpacity>
-</Animated.View>
-
+            entering={FadeInUp.duration(500)}
+            className="flex-row items-center justify-between mt-6"
+        >
+            <TouchableOpacity
+            onPress={() => router.push("/components/Products/Products")}
+            className="p-2 rounded-full bg-[#64CA96E5] shadow-md"
+            >
+            <MaterialIcons name="arrow-left" size={20} color="white" />
+            </TouchableOpacity>
+            <Text className="text-2xl font-bold text-gray-800">
+            My <Text className="text-green-600">Account</Text>
+            </Text>
+            <TouchableOpacity>
+            <MaterialIcons name="person" size={25} color="#64CA96E5" />
+            </TouchableOpacity>
+        </Animated.View>
 
         {/* Profile Section */}
         <Animated.View
@@ -217,9 +212,9 @@ const LoggedOutAccount = () => {
         </View>
         </View>
     );
-};
+    };
 
-export default function Account() {
+    export default function Account() {
     const { isLoggedIn } = useSelector((state: RootState) => state.user);
     return isLoggedIn ? <LoggedInAccount /> : <LoggedOutAccount />;
-}
+    }
