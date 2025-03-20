@@ -23,6 +23,7 @@ const login = async (data) => {
     }
 };
 
+
 // Signup Function
 const signup = async (data) => {
     try {
@@ -66,10 +67,25 @@ const getCategories = async (token) => {
     }
 };
 
+const getUser = async (token) => {
+    try {
+        const response = await Client.get("/wp/v2/users/me", {
+            headers: {
+                Authorization: `Bearer ${token}`, 
+            },
+        });
+        return response.data; 
+    } catch (error) {
+        console.error("Error fetching user data:", error.response?.data || error.message);
+        throw error;
+    }
+};
+
 
 export default {
     login,
     signup,
     getProducts,
     getCategories,
+    getUser,
 };

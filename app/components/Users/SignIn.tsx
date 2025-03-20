@@ -16,7 +16,7 @@ export default function SignIn() {
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
 
-    {/*useEffect(() => {
+    useEffect(() => {
         checkUserLogin();
     }, []);
 
@@ -25,7 +25,7 @@ export default function SignIn() {
         if (storedUser) {
             router.push("/Screens/Welcome");
         }
-    };*/}
+    };
 
     const handleSignIn = async () => {
         if (!username || !password) {
@@ -33,7 +33,7 @@ export default function SignIn() {
             return;
         }
 
-        setIsLoading(true);
+        setIsLoading(false);
 
         try {
             const response = await Client.login({ username, password });
