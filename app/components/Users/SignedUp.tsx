@@ -7,13 +7,13 @@ import {
     Image,
     ScrollView,
     Alert,
-} from "react-native";
+    } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { MaterialIcons } from "@expo/vector-icons";
 import Client from "../../Apis/client";
 
-export default function SignedUp() {
+    export default function SignedUp() {
     const router = useRouter();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -22,15 +22,18 @@ export default function SignedUp() {
     const [loading, setLoading] = useState(false);
 
     const handleSignup = async () => {
+        // Trim inputs to avoid whitespace issues
         const trimmedName = name.trim();
         const trimmedEmail = email.trim();
         const trimmedPassword = password.trim();
 
+        // Validate privacy policy checkbox
         if (!checked) {
         Alert.alert("Error", "Please accept the privacy policy.");
         return;
         }
 
+        // Validate all fields are filled
         if (!trimmedName || !trimmedEmail || !trimmedPassword) {
         Alert.alert("Error", "All fields are required.");
         return;
@@ -39,12 +42,13 @@ export default function SignedUp() {
         setLoading(true);
 
         try {
+        // Prepare payload 
         const payload = {
-            username: trimmedName,
+            username: trimmedName, 
             email: trimmedEmail,
             password: trimmedPassword,
         };
-        console.log("Sending data to API:", payload);
+        console.log("Sending data to API:", payload); 
 
         const response = await Client.signup(payload);
         console.log("Signup Success:", response.data);
@@ -66,116 +70,151 @@ export default function SignedUp() {
 
     return (
         <ScrollView
-        contentContainerStyle={{ flexGrow: 1 }}
-        className="bg-gray-50 p-6"
+        contentContainerStyle={{
+            flexGrow: 1,
+            justifyContent: "space-between",
+            padding: 20,
+            backgroundColor: "white",
+        }}
         >
-        <Stack.Screen options={{ headerShown: false }} />
+        <View>
+            <Stack.Screen options={{ headerShown: false }} />
 
-        {/* Back Button */}
-        <TouchableOpacity
+            {/* Back Button */}
+            <TouchableOpacity
             onPress={() => router.push("./SignUp")}
-            className="w-12 h-12 rounded-full bg-[#64CA96] justify-center items-center shadow-md"
-        >
-            <MaterialIcons name="arrow-left" size={28} color="white" />
-        </TouchableOpacity>
+            style={{
+                width: 40,
+                height: 40,
+                borderRadius: 20,
+                backgroundColor: "#64CA96E5",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+            >
+            <MaterialIcons name="arrow-left" size={24} color="white" />
+            </TouchableOpacity>
 
-        {/* Logo */}
-        <View className="items-center mt-6 mb-8">
+            {/* Logo */}
+            <View style={{ alignItems: "center", marginBottom: 20 }}>
             <Image
-            source={require("../../../assets/images/loginBear.png")}
-            className="w-40 h-40"
-            resizeMode="contain"
+                source={require("../../../assets/images/loginBear.png")}
+                style={{ width: 150, height: 150, resizeMode: "contain" }}
             />
-        </View>
+            </View>
 
-        {/* Title */}
-        <Text className="text-3xl font-extrabold text-center text-[#2DCC70] mb-8">
+            {/* Title */}
+            <Text
+            style={{
+                color: "rgba(45, 204, 112, 1)",
+                fontSize: 24,
+                fontWeight: "bold",
+                textAlign: "center",
+                marginBottom: 20,
+            }}
+            >
             Create Your Account
-        </Text>
+            </Text>
 
-        {/* Input Fields */}
-        <View className="space-y-5">
-            <View className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
+            {/* Input Fields */}
+            <View>
             <TextInput
                 placeholder="Name"
-                className="text-base text-gray-800"
+                style={{
+                marginBottom: 15,
+                padding: 10,
+                backgroundColor: "#f0f0f0",
+                borderRadius: 10,
+                fontSize: 16,
+                }}
                 value={name}
                 onChangeText={setName}
                 autoCapitalize="words"
-                placeholderTextColor="#9CA3AF"
             />
-            </View>
-            <View className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 mt-2">
             <TextInput
                 placeholder="Email"
-                className="text-base text-gray-800"
+                style={{
+                marginBottom: 15,
+                padding: 10,
+                backgroundColor: "#f0f0f0",
+                borderRadius: 10,
+                fontSize: 16,
+                }}
                 value={email}
                 onChangeText={setEmail}
                 keyboardType="email-address"
                 autoCapitalize="none"
-                placeholderTextColor="#9CA3AF"
             />
-            </View>
-            <View className="bg-white rounded-xl p-4 shadow-sm border border-gray-200 mt-2">
             <TextInput
                 placeholder="Password"
-                className="text-base text-gray-800"
+                style={{
+                marginBottom: 15,
+                padding: 10,
+                backgroundColor: "#f0f0f0",
+                borderRadius: 10,
+                fontSize: 16,
+                }}
                 secureTextEntry
                 value={password}
                 onChangeText={setPassword}
                 autoCapitalize="none"
-                placeholderTextColor="#9CA3AF"
             />
             </View>
-        </View>
 
-        {/* Privacy Policy */}
-        <View className="flex-row items-center mt-6 mb-8">
-            <Text className="text-gray-600 text-sm">I agree to the </Text>
-            <Text
-            onPress={() => router.push("/Screens/Privacy")}
-            className="text-[#2DCC70] text-sm font-medium underline"
+            {/* Privacy Policy */}
+            <View
+            style={{ flexDirection: "row", alignItems: "center", marginBottom: 20 }}
             >
-            Privacy Policy
+            <Text style={{ color: "gray", fontSize: 14 }}>I have read the </Text>
+            <Text
+                onPress={() => router.push("/Screens/Privacy")}
+                style={{
+                color: "green",
+                fontSize: 14,
+                textDecorationLine: "underline",
+                }}
+            >
+                privacy policy
             </Text>
-            <Text className="text-gray-600 text-sm mr-2">.</Text>
+            <Text style={{ color: "gray", fontSize: 14, marginRight: 4 }}>.</Text>
             <BouncyCheckbox
-            size={18}
-            fillColor="#2DCC70"
-            unFillColor="#FFFFFF"
-            iconStyle={{
-                borderColor: "#2DCC70",
-                borderRadius: 4,
+                size={14}
+                fillColor="green"
+                iconStyle={{
+                borderColor: "green",
+                borderRadius: 2,
                 borderWidth: 2,
-            }}
-            innerIconStyle={{ borderWidth: 2, borderRadius: 4 }}
-            onPress={(isChecked) => setChecked(isChecked)}
+                width: 15,
+                height: 15,
+                }}
+                innerIconStyle={{ borderWidth: 2, borderRadius: 1 }}
+                onPress={(isChecked) => {
+                console.log("Checkbox checked:", isChecked); // Debug log
+                setChecked(isChecked);
+                }}
             />
-        </View>
+            </View>
 
-        {/* Sign Up Button */}
-        <TouchableOpacity
-            className={`bg-[#2DCC70] to-[#64CA96] py-4 rounded-full items-center shadow-lg ${
-            loading ? "opacity-70" : "opacity-100"
-            }`}
+            {/* Sign Up Button */}
+            <TouchableOpacity
+            style={{
+                backgroundColor: "darkgreen",
+                paddingVertical: 12,
+                borderRadius: 30,
+                alignItems: "center",
+                alignSelf: "center",
+                width: 374,
+                marginTop: 5,
+                opacity: loading ? 0.5 : 1,
+            }}
             onPress={handleSignup}
             disabled={loading}
-        >
-            <Text className="text-white text-lg font-semibold">
-            {loading ? "Signing Up..." : "Sign Up"}
+            >
+            <Text style={{ color: "white", fontSize: 18, fontWeight: "bold" }}>
+                {loading ? "Signing Up..." : "Sign Up"}
             </Text>
-        </TouchableOpacity>
-
-        {/* Footer Link */}
-        <TouchableOpacity
-            onPress={() => router.push("./SignIn")}
-            className="mt-6 self-center"
-        >
-            <Text className="text-gray-600 text-lg">
-            Already have an account?{" "}
-            <Text className="text-[#2DCC70] font-medium">Sign In</Text>
-            </Text>
-        </TouchableOpacity>
+            </TouchableOpacity>
+        </View>
         </ScrollView>
     );
-}
+    }

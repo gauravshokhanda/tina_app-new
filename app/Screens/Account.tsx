@@ -3,7 +3,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser, clearUser } from "../components/Users/userReducer";
+import { setUserState, clearUserState } from "../components/Users/userReducer";
 import { RootState } from "../Services/store";
 import Animated, { FadeIn, FadeInUp } from "react-native-reanimated";
 
@@ -24,7 +24,7 @@ const LoggedOutAccount = () => {
             Log in to access your orders, transactions, and settings.
             </Text>
             <TouchableOpacity
-            onPress={() => router.push("../Users/SignIn")}
+            onPress={() => router.push('/components/Users/SignIn')}
             className="bg-[#64CA96E5] py-3 px-6 rounded-lg flex-row items-center justify-center mt-8 shadow-md"
             >
             <MaterialIcons name="exit-to-app" size={22} color="white" />
@@ -41,7 +41,7 @@ const LoggedOutAccount = () => {
     const { name } = useSelector((state: RootState) => state.user);
 
     const handleLogout = () => {
-        dispatch(clearUser());
+        dispatch(clearUserState());
         router.push("/components/Users/SignIn");
     };
 
