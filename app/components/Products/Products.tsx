@@ -18,7 +18,7 @@ import {
     import { RootState, AppDispatch } from "../../Services/store";
     import client from "../../Apis/client";
     import Loading from "../../components/Loading/Loading";
-
+    import { useLocalSearchParams } from "expo-router";
     interface Product {
     id: number;
     name: string;
@@ -36,6 +36,7 @@ import {
 
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const { categoryId } = useLocalSearchParams();
 
     const dispatch = useDispatch<AppDispatch>();
         const cart = useSelector((state: RootState) => state.cart.items) as CartItem[];
@@ -47,8 +48,7 @@ import {
             return [];
             });
             // console.log("Fetched Products Data:", productData);
-
-            const formattedProducts = productData.map((item: any) => ({
+            const formattedProducts = productData.filter((item: any) => item.categoryId == categoryId).map((item: any) => ({
             id: item.id,
             name: item.name || "name",
             image:
@@ -67,7 +67,7 @@ import {
         };
 
         fetchProducts();
-    }, []);
+    }, [categoryId]);
     const handleAddToCart = (product: Product) => {
         dispatch(addToCart({ ...product, quantity: 1 }));
     };

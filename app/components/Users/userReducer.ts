@@ -42,7 +42,7 @@
         state.profileImage = action.payload.profileImage;
         },
         clearUserState: (state) => {
-        return initialState;
+            return { ...initialState, isLoggedIn: false }; 
         },
         loadUserState: (state, action: PayloadAction<UserState>) => {
         return { ...action.payload };

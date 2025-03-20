@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
-import clearUser, { setUserState, clearUserState, setUser } from "../components/Users/userReducer";
+import { setUserState, clearUserState, setUser, clearUser } from "../components/Users/userReducer";
 import { RootState } from "../Services/store";
 import Animated, { FadeIn, FadeInUp } from "react-native-reanimated";
 
@@ -40,11 +40,14 @@ const LoggedOutAccount = () => {
     const dispatch = useDispatch();
     const { name } = useSelector((state: RootState) => state.user);
 
-    const handleLogout = () => {
-        dispatch(clearUserState());
-        router.push("/components/Users/SignIn");
+    const handleLogout = async () => {
+        try {
+            await dispatch(clearUserState()); 
+            router.replace("/components/Users/SignIn"); 
+        } catch (error) {
+            console.error("Logout failed:", error);
+        }
     };
-
     return (
         <View className="flex-1 bg-[#E6F2ED] px-4 pb-20">
         <Stack.Screen options={{ headerShown: false }} />
@@ -215,6 +218,13 @@ const LoggedOutAccount = () => {
     };
 
     export default function Account() {
-    const { isLoggedIn } = useSelector((state: RootState) => state.user);
-    return isLoggedIn ? <LoggedInAccount /> : <LoggedOutAccount />;
+        const { isLoggedIn } = useSelector((state: RootState) => state.user);
+        const [refresh, setRefresh] = useState(false);
+    
+        useEffect(() => {
+            setRefresh((prev) => !prev); 
+        }, [isLoggedIn]);
+    
+        console.log("Rendering Account Screen. isLoggedIn:", isLoggedIn);
+        return isLoggedIn ? <LoggedInAccount /> : <LoggedOutAccount />;
     }

@@ -18,9 +18,9 @@ export default function SignIn() {
 
     {/*useEffect(() => {
         checkUserLogin();
-    }, []);*/}
+    }, []);
 
-    {/*const checkUserLogin = async () => {
+    const checkUserLogin = async () => {
         const storedUser = await AsyncStorage.getItem("user");
         if (storedUser) {
             router.push("/Screens/Welcome");

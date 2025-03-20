@@ -23,6 +23,7 @@ export const rootReducer = combineReducers({
   products: productReducer,
   payment: paymentReducer,
   order: orderReducer,
+  
 });
 
 // Create Persisted Reducer

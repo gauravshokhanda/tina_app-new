@@ -22,6 +22,13 @@ interface Product {
     price: string;
     }
 
+    interface Category  {
+        id: number;
+        name: string;
+        image: { uri: string } | number;
+        icon: keyof typeof MaterialIcons.glyphMap;
+    };
+
     export default function Welcome() {
     const router = useRouter();
     const user = useSelector((state: RootState) => state?.user);
@@ -43,7 +50,7 @@ interface Product {
             image: item.images?.[0]?.src
                 ?  { uri: item.images[0].src } 
                 : "",
-            price: item.price || "N/A",
+                price: item.price || "N/A",
             }));
             // console.log("Formatted Products:", formattedProducts);
             setProducts(formattedProducts);
@@ -57,12 +64,7 @@ interface Product {
         fetchProducts();
     }, []);
 
-    type Category = {
-        id: number;
-        name: string;
-        image: { uri: string } | number;
-        icon: keyof typeof MaterialIcons.glyphMap;
-    };
+    
     {/*const categories = [
         { id: 1, name: "One Time Pick-Ups", icon: "local-shipping" },
         { id: 2, name: "Weekly Removal", icon: "autorenew" },
@@ -78,9 +80,9 @@ interface Product {
             const formattedCategory = categoryData.slice(0,4).map((item: any) => ({
             id: item.id,
             name: item.name || "name",
-            image: item.images?.[0]?.src
-                ?  { uri: item.images[0].src } 
-                : require('../../assets/images/always-working-img.jpg'),
+            image: item.image?.src
+                ?  { uri: item.image.src } 
+                : "",
             }));
             setCategory(formattedCategory);
         } catch (error) {

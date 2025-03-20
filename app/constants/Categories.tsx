@@ -2,24 +2,49 @@ import React, { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
-import Client from "../Apis/client"; 
+import client from "../Apis/client"; 
+import Loading from "../components/Loading/Loading";
+import { useSelector } from "react-redux";
+import { RootState } from "../Services/store";
+
+interface Category  {
+  id: number;
+  name: string;
+  image: { uri: string } | number;
+  icon: keyof typeof MaterialIcons.glyphMap;
+};
 
 export default function Categories() {
   const router = useRouter();
-  const [categories, setCategories] = useState([]);
+    const user = useSelector((state: RootState) => state?.user);
+    // console.log("User Name:", user);
+    const [category, setCategory] = useState<Category[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const data = await Client.getCategories();
-        setCategories(data);
-      } catch (error) {
-        console.error("Failed to fetch categories:", error);
+          const fetchCategories = async () => {
+          try {
+              const categoryData = await client.getCategories();
+              // console.log("Fetched Category Data:", CategoryData);
+              
+              const formattedCategory = categoryData.map((item: any) => ({
+              id: item.id,
+              name: item.name || item.title || "Unnamed Category",
+              }));
+              setCategory(formattedCategory);
+          } catch (error) {
+              console.error("Failed to fetch Categories:", error);
+          } finally {
+              setLoading(false);
+          }
+          };
+  
+          fetchCategories();
+      }, []);
+  
+      if (loading) {
+          return <Loading />;
       }
-    };
-
-    fetchCategories();
-  }, []);
 
   return (
     <View className="flex-1 bg-[#E6F2ED]">
@@ -62,14 +87,15 @@ export default function Categories() {
 
         {/* Product Buttons */}
         <View className="mt-8 space-y-4">
-          {categories.map((category, index) => (
+          {category.map((items, index) => ( 
             <TouchableOpacity
-              key={index}
-              className="bg-[#094b34] p-4 rounded-lg items-center border border-gray-500 mb-4"
-              onPress={() => router.push(`/components/Products/Products?category=${category.id}`)}
-            >
-              <Text className="text-lg text-white font-semibold">{category.name}</Text>
-            </TouchableOpacity>
+            key={items.id}
+            onPress={() => router.push(`/components/Products/Products?categoryId=${items.id}`)}
+            className="bg-[#094b34] p-4 rounded-lg items-center border border-gray-500 mb-4"
+        >
+            <Text className="text-lg text-white font-semibold">{items.name}</Text>
+        </TouchableOpacity>
+        
           ))}
         </View>
       </ScrollView>
