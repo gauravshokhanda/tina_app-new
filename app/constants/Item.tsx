@@ -12,6 +12,8 @@ interface Product {
   price: string;
   images: { src: string }[];
   stock_status: string;
+  description: string;
+  features: string[]; 
 }
 
 export default function Item() {
@@ -38,6 +40,8 @@ export default function Item() {
             images: productData.images || [],
             price: productData.price || "N/A",
             stock_status: productData.stock_status || "N/A",
+            description: productData.description || "No description available.",
+            features: productData.meta_data?.find((meta: any) => meta.key === "features")?.value || [], 
           });
         }
       } catch (error) {
@@ -122,6 +126,27 @@ export default function Item() {
               <MaterialIcons name="description" size={20} color="gray" />
               <Text className="text-gray-700 ml-2 flex-1 text-lg">Stock Status: {product.stock_status}</Text>
             </View>
+          </View>
+        </Animated.View>
+
+        {/* Description Section */}
+        <Animated.View style={{ opacity: fadeValue }}>
+          <View className="bg-white p-4 rounded-lg shadow-lg mb-4">
+            <Text className="text-xl font-extrabold text-gray-900 mb-3">📝 Description</Text>
+            <Text className="text-gray-700 text-lg">{product.description}</Text>
+          </View>
+        </Animated.View>
+
+        {/* Features Section */}
+        <Animated.View style={{ opacity: fadeValue }}>
+          <View className="bg-white p-4 rounded-lg shadow-lg mb-4">
+            <Text className="text-xl font-extrabold text-gray-900 mb-3">⚡ Features</Text>
+            {product.features.map((feature, index) => (
+              <View key={index} className="flex-row items-center mb-2">
+                <MaterialIcons name="check-circle" size={20} color="green" />
+                <Text className="text-gray-600 ml-2">{product.features}</Text>
+              </View>
+            ))}
           </View>
         </Animated.View>
 
