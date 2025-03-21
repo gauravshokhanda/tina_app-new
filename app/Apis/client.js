@@ -81,6 +81,7 @@ const getUser = async (token) => {
     }
 };
 
+
 const addToCart = async (token, cartData) => {
     try {
         const response = await Client.post("/custom/v1/add-to-cart/", cartData, {
