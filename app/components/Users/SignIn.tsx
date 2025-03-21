@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Image, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { View, Image, Text, TextInput, TouchableOpacity, Alert,KeyboardAvoidingView,ScrollView,Platform } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -53,7 +53,15 @@ export default function SignIn() {
     };
 
     return (
-        <View className="flex-1 bg-white px-6">
+        <KeyboardAvoidingView 
+            behavior={Platform.OS === "ios" ? "padding" : "height"} 
+            className="flex-1 bg-white"
+        >
+            <ScrollView 
+                contentContainerStyle={{ flexGrow: 1 }} 
+                keyboardShouldPersistTaps="handled"
+            >
+        <View className="flex-1 px-6">
             <Stack.Screen options={{ headerShown: false }} />
 
             <TouchableOpacity
@@ -78,6 +86,7 @@ export default function SignIn() {
                     value={username} 
                     onChangeText={setUsername}  
                     autoCapitalize="none"
+                    placeholderTextColor={"gray"}
                 />
                 <TextInput
                     className="bg-gray-100 p-6 rounded-lg"
@@ -85,6 +94,7 @@ export default function SignIn() {
                     secureTextEntry
                     value={password}
                     onChangeText={setPassword}
+                    placeholderTextColor={"gray"}
                 />
 
                 <TouchableOpacity
@@ -119,5 +129,7 @@ export default function SignIn() {
                 </View>
             </View>
         </View>
+        </ScrollView>
+        </KeyboardAvoidingView>
     );
 }

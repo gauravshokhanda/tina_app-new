@@ -1,17 +1,15 @@
-// Products.tsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import {
   View,
   Text,
   Image,
   TouchableOpacity,
   FlatList,
-  ScrollView,
   ImageSourcePropType,
   ActivityIndicator,
-  Alert
+  Alert,
 } from "react-native";
-import { useRouter, Stack ,useLocalSearchParams} from "expo-router";
+import { useRouter, Stack, useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
 import { addToCart, removeFromCart } from "../Cart/cartReducer";
@@ -34,28 +32,25 @@ interface CartItem extends Product {
 export default function Products() {
   const router = useRouter();
   const { categoryId } = useLocalSearchParams();
-  console.log("categoryid",categoryId)
+  // console.log("categoryid", categoryId);
   const { token } = useSelector((state: RootState) => state?.user);
+  const dispatch = useDispatch<AppDispatch>();
+  const cart = useSelector((state: RootState) => state.cart.items) as CartItem[];
 
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
- 
-  const dispatch = useDispatch<AppDispatch>();
-  const cart = useSelector(
-    (state: RootState) => state.cart.items
-  ) as CartItem[];
+  const [addingToCart, setAddingToCart] = useState<number | null>(null); // Track which product is being added
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const endpoint = categoryId 
+        const endpoint = categoryId
           ? `/wc/v3/products?category=${categoryId}`
           : "/wc/v3/products";
-        const productData = await client.getProducts(endpoint,token).catch((err) => {
+        const productData = await client.getProducts(endpoint, token).catch((err) => {
           console.error("API Error:", err);
           return [];
         });
-        // console.log("Fetched Products Data:", productData);
 
         const formattedProducts = productData.map((item: any) => ({
           id: item.id,
@@ -66,63 +61,118 @@ export default function Products() {
               : "",
           price: item.price || "N/A",
         }));
-        // console.log("Formatted Product:", formattedProducts);
         setProducts(formattedProducts);
       } catch (error) {
         console.error("Failed to fetch products:", error);
+        Alert.alert(
+          "Error",
+          "Failed to load products. Please try again.",
+          [
+            {
+              text: "Retry",
+              onPress: () => fetchProducts(),
+            },
+            {
+              text: "Cancel",
+              style: "cancel",
+              onPress: () => router.push("/Screens/Welcome"),
+            },
+          ]
+        );
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, [categoryId, token]);
-  const handleAddToCart = async(product: Product) => {
+  }, [categoryId, token, router]);
 
-    dispatch(addToCart({ ...product, quantity: 1 }));
-    try {
-        const response = await client.addToCart(product.id, 1, token);
-        console.log("Add to Cart API Response:", response.message);
+  const handleAddToCart = useCallback(
+    async (product: Product) => {
+      if (!token) {
+        Alert.alert("Error", "Please log in to continue.", [
+          {
+            text: "OK",
+            onPress: () => router.push("/components/Users/SignIn"),
+          },
+        ]);
+        return;
+      }
+
+      setAddingToCart(product.id); // Set loading state for this product
+
+      // Check if the product is already in the cart and get its current quantity
+      const currentQuantity = getQuantity(product.id);
+      const quantityToAdd = currentQuantity > 0 ? currentQuantity + 1 : 1;
+
+      // Update the local cart state
+      dispatch(addToCart({ ...product, quantity: 1 })); // Increment by 1
+
+      try {
+        // Send the updated quantity to the backend
+        const response = await client.addToCart(product.id, quantityToAdd, token);
+        console.log("Add to Cart API Response:", response);
         Alert.alert(
-          "Success", // Title
-          response?.message ||"Product added to cart ", // Message
+          "Success",
+          response?.message || "Product added to cart",
           [
             {
-              text: "OK", // Button text
-              onPress: () => console.log("OK Pressed"), // Optional: Action on button press
+              text: "View Cart",
+              onPress: () =>
+                router.push({
+                  pathname: "/components/Cart/Cart",
+                  params: { cart: encodeURIComponent(JSON.stringify(cart)) },
+                }),
+            },
+            {
+              text: "Continue Shopping",
+              style: "cancel",
             },
           ]
         );
-  
-
-      } catch (error) {
+      } catch (error: any) {
         console.error("Failed to add to cart via API:", error);
-  
-        alert("Failed to add to cart. Please try again.");
+        Alert.alert(
+          "Error",
+          error.response?.data?.message || "Failed to add to cart. Please try again.",
+          [
+            {
+              text: "Retry",
+              onPress: () => handleAddToCart(product),
+            },
+            {
+              text: "Cancel",
+              style: "cancel",
+            },
+          ]
+        );
+        // Revert the local cart state if the API fails
+        dispatch(removeFromCart(product.id));
+      } finally {
+        setAddingToCart(null); // Reset loading state
       }
-  };
+    },
+    [token, dispatch, cart, router]
+  );
 
   const changeQuantity = (itemId: number, action: "increase" | "decrease") => {
     const product = products.find((p) => p.id === itemId);
     if (!product) return;
 
     if (action === "increase") {
-      dispatch(addToCart({ ...product, quantity: 1 }));
+      // When increasing quantity, call handleAddToCart to sync with the backend
+      handleAddToCart(product);
     } else {
       dispatch(removeFromCart(itemId));
     }
   };
 
   const isInCart = (itemId: number) => {
-    return cart.some(
-      (item: Product & { quantity: number }) => item.id === itemId
-    );
+    return cart.some((item: CartItem) => item.id === itemId);
   };
 
   const getQuantity = (itemId: number) => {
-    const item = cart.find(
-      (item: Product & { quantity: number }) => item.id === itemId
-    );
+    const item = cart.find((item: CartItem) => item.id === itemId);
     return item ? item.quantity : 0;
   };
 
@@ -224,6 +274,7 @@ export default function Products() {
                 <TouchableOpacity
                   onPress={() => changeQuantity(item.id, "decrease")}
                   className="bg-[#4CAF50] p-1 rounded-full"
+                  disabled={addingToCart === item.id}
                 >
                   <MaterialIcons name="remove" size={18} color="white" />
                 </TouchableOpacity>
@@ -231,17 +282,29 @@ export default function Products() {
                 <TouchableOpacity
                   onPress={() => changeQuantity(item.id, "increase")}
                   className="bg-[#4CAF50] p-1 rounded-full"
+                  disabled={addingToCart === item.id}
                 >
-                  <MaterialIcons name="add" size={18} color="white" />
+                  {addingToCart === item.id ? (
+                    <ActivityIndicator size="small" color="white" />
+                  ) : (
+                    <MaterialIcons name="add" size={18} color="white" />
+                  )}
                 </TouchableOpacity>
               </View>
             ) : (
               <TouchableOpacity
                 className="bg-[#64CA96E5] px-3 py-2 mt-2 rounded-lg flex-row items-center"
                 onPress={() => handleAddToCart(item)}
+                disabled={addingToCart === item.id}
               >
-                <MaterialIcons name="shopping-cart" size={18} color="white" />
-                <Text className="text-white ml-2">Add to Cart</Text>
+                {addingToCart === item.id ? (
+                  <ActivityIndicator size="small" color="white" />
+                ) : (
+                  <>
+                    <MaterialIcons name="shopping-cart" size={18} color="white" />
+                    <Text className="text-white ml-2">Add to Cart</Text>
+                  </>
+                )}
               </TouchableOpacity>
             )}
           </View>
