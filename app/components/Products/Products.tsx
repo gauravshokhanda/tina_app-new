@@ -18,6 +18,7 @@ import { setProducts } from "./productReducer";
 import { RootState, AppDispatch } from "../../Services/store";
 import client from "../../Apis/client";
 import Loading from "../../components/Loading/Loading";
+import Toast from 'react-native-toast-message';
 interface Product {
   id: number;
   name: string;
@@ -75,8 +76,35 @@ export default function Products() {
 
     fetchProducts();
   }, [categoryId, token]);
-  const handleAddToCart = (product: Product) => {
+  const handleAddToCart = async(product: Product) => {
+
     dispatch(addToCart({ ...product, quantity: 1 }));
+    try {
+        const response = await client.addToCart(product.id, 1, token);
+        console.log("Add to Cart API Response:", response.message);
+        Toast.show({
+          type: 'success',
+          text1: 'Test Toast',
+          text2: 'This is a test message',
+        });
+        // if (response && response.message) {
+        //     Toast.show({
+        //         type: 'success',
+        //         text1: response.message,
+        //     });
+        // } else {
+        //     Toast.show({
+        //         type: 'success',
+        //         text1: 'Product added to cart successfully',
+        //     });
+        // }
+  
+
+      } catch (error) {
+        console.error("Failed to add to cart via API:", error);
+  
+        alert("Failed to add to cart. Please try again.");
+      }
   };
 
   const changeQuantity = (itemId: number, action: "increase" | "decrease") => {

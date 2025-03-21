@@ -81,6 +81,31 @@ const getUser = async (token) => {
     }
 };
 
+// Add to Cart Function
+const addToCart = async (productId, quantity, token) => {
+
+    try {
+        const response = await Client.post(
+            "/custom/v1/add-to-cart/",
+            {
+                product_id: productId,
+                quantity: quantity,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`, 
+                    "Content-Type": "application/json"
+                },
+            }
+        );
+        
+        return response.data;
+    } catch (error) {
+        console.error("Add to Cart API Error:", error.response?.data || error.message);
+        throw error;
+    }
+};
+
 
 export default {
     login,
@@ -88,4 +113,5 @@ export default {
     getProducts,
     getCategories,
     getUser,
+    addToCart,
 };
