@@ -154,7 +154,6 @@
         },
         [token, dispatch, cart, router]
     );
-
     const changeQuantity = (itemId: number, action: "increase" | "decrease") => {
         const product = products.find((p) => p.id === itemId);
         if (!product) return;
