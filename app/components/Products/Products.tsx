@@ -6,18 +6,18 @@
     Image,
     TouchableOpacity,
     FlatList,
-    ScrollView,
     ImageSourcePropType,
-    ActivityIndicator,
+    Alert
     } from "react-native";
     import { useRouter, Stack ,useLocalSearchParams} from "expo-router";
     import { MaterialIcons } from "@expo/vector-icons";
     import { useSelector, useDispatch } from "react-redux";
-    import { addToCart ,removeFromCart } from "../Cart/cartReducer";
+    import { addToCart, removeFromCart } from "../Cart/cartReducer";
     import { setProducts } from "./productReducer";
     import { RootState, AppDispatch } from "../../Services/store";
     import client from "../../Apis/client";
     import Loading from "../../components/Loading/Loading";
+
     interface Product {
     id: number;
     name: string;
@@ -75,8 +75,29 @@
 
         fetchProducts();
     }, [categoryId, token]);
-    const handleAddToCart = (product: Product) => {
+    const handleAddToCart = async(product: Product) => {
+
         dispatch(addToCart({ ...product, quantity: 1 }));
+        try {
+            const response = await client.addToCart(product.id, 1, token);
+            console.log("Add to Cart API Response:", response.message);
+            Alert.alert(
+            "Success", // Title
+            response?.message ||"Product added to cart ", // Message
+            [
+                {
+                text: "OK", // Button text
+                onPress: () => console.log("OK Pressed"), // Optional: Action on button press
+                },
+            ]
+            );
+    
+
+        } catch (error) {
+            console.error("Failed to add to cart via API:", error);
+    
+            alert("Failed to add to cart. Please try again.");
+        }
     };
 
     const changeQuantity = (itemId: number, action: "increase" | "decrease") => {
