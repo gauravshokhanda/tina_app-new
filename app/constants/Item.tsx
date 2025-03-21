@@ -62,6 +62,7 @@ export default function Item() {
   if (loading) {
     return (
       <View className="flex-1 bg-[#E6F2ED] justify-center items-center">
+        <Stack.Screen options={{ headerShown: false }} />
         <ActivityIndicator size="large" color="#64CA96E5" />
         <Text className="text-xl font-semibold text-gray-700 mt-2">Loading Product...</Text>
       </View>
@@ -72,6 +73,7 @@ export default function Item() {
   if (!product) {
     return (
       <View className="flex-1 bg-[#E6F2ED] justify-center items-center">
+        <Stack.Screen options={{ headerShown: false }} />
         <Text className="text-2xl font-semibold text-gray-700">Product not found</Text>
         <TouchableOpacity
           onPress={() => router.push("/components/Products/Products")}
