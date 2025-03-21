@@ -9,6 +9,7 @@ import {
   ScrollView,
   ImageSourcePropType,
   ActivityIndicator,
+  Alert
 } from "react-native";
 import { useRouter, Stack ,useLocalSearchParams} from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -18,7 +19,7 @@ import { setProducts } from "./productReducer";
 import { RootState, AppDispatch } from "../../Services/store";
 import client from "../../Apis/client";
 import Loading from "../../components/Loading/Loading";
-import Toast from 'react-native-toast-message';
+
 interface Product {
   id: number;
   name: string;
@@ -82,22 +83,16 @@ export default function Products() {
     try {
         const response = await client.addToCart(product.id, 1, token);
         console.log("Add to Cart API Response:", response.message);
-        Toast.show({
-          type: 'success',
-          text1: 'Test Toast',
-          text2: 'This is a test message',
-        });
-        // if (response && response.message) {
-        //     Toast.show({
-        //         type: 'success',
-        //         text1: response.message,
-        //     });
-        // } else {
-        //     Toast.show({
-        //         type: 'success',
-        //         text1: 'Product added to cart successfully',
-        //     });
-        // }
+        Alert.alert(
+          "Success", // Title
+          response?.message ||"Product added to cart ", // Message
+          [
+            {
+              text: "OK", // Button text
+              onPress: () => console.log("OK Pressed"), // Optional: Action on button press
+            },
+          ]
+        );
   
 
       } catch (error) {
