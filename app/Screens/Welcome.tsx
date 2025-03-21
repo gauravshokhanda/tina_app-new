@@ -52,7 +52,6 @@ interface Product {
                 : "",
                 price: item.price || "N/A",
             }));
-            // console.log("Formatted Products:", formattedProducts);
             setProducts(formattedProducts);
         } catch (error) {
             console.error("Failed to fetch products:", error);
@@ -184,6 +183,10 @@ interface Product {
                 renderItem={({ item }) => (
                 <TouchableOpacity
                     key={item.id}
+                    onPress={() => router.push({
+                        pathname: "/constants/Item",
+                        params: { productId: item.id },  
+                    })}
                     className="bg-white rounded-lg w-36 p-3 items-center  mx-2"
                 >
                     <Image

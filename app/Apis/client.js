@@ -106,6 +106,22 @@ const addToCart = async (productId, quantity, token) => {
     }
 };
 
+const getProductById = async (productId, token) => {
+    try {
+        const response = await Client.get(`/wc/v3/products/${productId}?_fields=id,name,price,images,stock_status`, {
+            headers: {
+                "Authorization": "Basic " + btoa("ck_14ef07aa2b169178c93dd7cda910d7d7e306ef1b:cs_855830329384328e92c820d1b1d2ff4a8fa2b3ee"),
+                "Content-Type": "application/json"
+            },
+        });
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching product details:", error.response?.data || error.message);
+        throw error;
+    }
+};
+
+
 
 export default {
     login,
@@ -114,4 +130,5 @@ export default {
     getCategories,
     getUser,
     addToCart,
+    getProductById
 };
