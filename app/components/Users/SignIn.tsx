@@ -33,7 +33,7 @@ export default function SignIn() {
             return;
         }
 
-        setIsLoading(false);
+        setIsLoading(true);
 
         try {
             const response = await Client.login({ username, password });
