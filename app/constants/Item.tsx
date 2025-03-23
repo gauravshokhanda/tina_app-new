@@ -10,7 +10,7 @@ import { addToCart } from "../components/Cart/cartReducer";
 interface Product {
   id: number;
   name: string;
-  price: string;
+  price: number;
   images: { src: string }[];
   stock_status: string;
   description: string;
@@ -73,7 +73,7 @@ export default function Item() {
           id: product.id,
         name: product.name,
         price: product.price,
-        image: product.images[0]?.src || "https://via.placeholder.com/150", 
+        image: { uri: product.images[0]?.src || "https://via.placeholder.com/150" }, 
         quantity: quantity,
         })
       );
@@ -130,25 +130,26 @@ export default function Item() {
       </Animated.View>
 
       <ScrollView className="px-4 mt-4 mb-20">
+        {/*product image*/ }
         <Animated.View style={{ opacity: fadeValue }}>
-          <View className="items-center mb-4">
+          <View className="items-center mb-6">
             <Image
               source={{ uri: product.images[0]?.src || "https://via.placeholder.com/150" }}
-              className="w-60 h-60 rounded-lg"
-              resizeMode="contain"
+              className="w-80 h-80 rounded-2xl shadow-lg border-2 border-[#64CA96E5]"
+              resizeMode="cover"
             />
           </View>
         </Animated.View>
 
         <Animated.View style={{ opacity: fadeValue }}>
-          <View className="bg-white p-6 rounded-lg shadow-lg mb-4">
-            <Text className="text-3xl font-extrabold text-gray-900 mb-2">{product.name}</Text>
-            <View className="flex-row items-center mb-2">
-              <MaterialIcons name="account-balance-wallet" size={24} color="green" />
-              <Text className="text-2xl font-bold text-green-600 ml-1">${product.price}</Text>
+          <View className="bg-white p-6 rounded-2xl shadow-lg mb-6">
+            <Text className="text-3xl font-extrabold text-gray-900 mb-3">{product.name}</Text>
+            <View className="flex-row items-center mb-3">
+              <MaterialIcons name="account-balance-wallet" size={28} color="#64CA96E5" />
+              <Text className="text-2xl font-bold text-[#64CA96E5] ml-2">${product.price}</Text>
             </View>
             <View className="flex-row items-start">
-              <MaterialIcons name="description" size={20} color="gray" />
+              <MaterialIcons name="inventory" size={20} color="#64CA96E5" />
               <Text className="text-gray-700 ml-2 flex-1 text-lg">Stock Status: {product.stock_status}</Text>
             </View>
           </View>
@@ -156,21 +157,21 @@ export default function Item() {
 
         {/* Quantity Selector */}
         <Animated.View style={{ opacity: fadeValue }}>
-          <View className="bg-white p-4 rounded-lg shadow-lg mb-4">
-            <Text className="text-xl font-extrabold text-gray-900 mb-3">Quantity</Text>
-            <View className="flex-row items-center">
+          <View className="bg-white p-6 rounded-2xl shadow-lg mb-6">
+            <Text className="text-xl font-extrabold text-gray-900 mb-4">Quantity</Text>
+            <View className="flex-row items-center justify-center">
               <TouchableOpacity
                 onPress={() => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))}
-                className="p-2 bg-gray-200 rounded-full"
+                className="p-3 bg-gray-100 rounded-full"
               >
-                <MaterialIcons name="remove" size={20} color="black" />
+                <MaterialIcons name="remove" size={24} color="black" />
               </TouchableOpacity>
-              <Text className="text-xl font-bold mx-4">{quantity}</Text>
+              <Text className="text-2xl font-bold mx-6">{quantity}</Text>
               <TouchableOpacity
                 onPress={() => setQuantity((prev) => prev + 1)}
-                className="p-2 bg-gray-200 rounded-full"
+                className="p-3 bg-gray-100 rounded-full"
               >
-                <MaterialIcons name="add" size={20} color="black" />
+                <MaterialIcons name="add" size={24} color="black" />
               </TouchableOpacity>
             </View>
           </View>

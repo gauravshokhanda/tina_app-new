@@ -90,6 +90,7 @@ const addToCart = async (productId, quantity, token) => {
             {
                 product_id: productId,
                 quantity: quantity,
+                
             },
             {
                 headers: {
