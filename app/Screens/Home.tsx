@@ -2,11 +2,25 @@ import React, { useEffect, useRef } from "react";
 import { View, Image, Text, ActivityIndicator, Animated, Easing } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter, Stack } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home() {
   const router = useRouter();
 
   const animation = useRef(new Animated.Value(0)).current;
+
+
+
+  useEffect(() => {
+    checkUserLogin();
+}, []);
+
+const checkUserLogin = async () => {
+    const storedUser = await AsyncStorage.getItem("user");
+    if (storedUser) {
+        router.push("/Screens/Welcome");
+    }
+};
 
   useEffect(() => {
     // Start animation
