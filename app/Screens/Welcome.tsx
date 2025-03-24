@@ -8,7 +8,7 @@ import {
   ActivityIndicator,
   FlatList,
 } from "react-native";
-import { useRouter, Stack, Link } from "expo-router";
+import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import client from "../Apis/client";

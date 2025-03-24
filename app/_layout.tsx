@@ -4,71 +4,81 @@ import "../global.css";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import store, { persistor } from "./Services/store";
-import { Ionicons } from "@expo/vector-icons";
-import { View, Text } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function RootLayout() {
   const pathname = usePathname();
-
-  // Pages where the bottom navigation should be hidden
   const hiddenRoutes = [
-    "/Screens/Home", 
-    "/components/Users/SignUp", 
-    "/components/Users/SignIn", 
-    "/components/Users/SignedUp", 
-    "/Screens/Privacy", 
-    "/Screens/Terms", 
+    "/components/Users/SignUp",
+    "/components/Users/SignIn",
+    "/components/Users/SignedUp",
+    "/Screens/Privacy",
+    "/Screens/Terms",
     "/components/Feedback/ContactSeller",
-    "/components/Feedback/TrackShipment", 
-    "/components/Payment/PayWithCard",
-    "/components/Screens/Settings"
+    "/components/Feedback/TrackShipment",
+    "/components/Payments/PayWithCard",
+    "/Screens/Settings",
+    "/Screens/Home",
   ];
+
+  const shouldHideTabs = hiddenRoutes.some(route => pathname.startsWith(route));
 
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        {hiddenRoutes.includes(pathname) ? (
-          <Stack />
-        ) : (
+        <SafeAreaView style={{ flex: 1, backgroundColor: "#E3F8F3" }}>
           <Tabs
             screenOptions={{
               headerShown: false,
-              tabBarActiveTintColor: "#22c55e",
-              tabBarInactiveTintColor: "gray",
-              tabBarStyle: {
-                backgroundColor: "#64CA96E5",
-                position: "absolute",
-                bottom: 0,
-                left: 0,
-                right: 0,
-                paddingVertical: 10,
-                height: 60,
-                shadowOpacity: 0.3,
-                shadowRadius: 4,
-                shadowColor: "black",
-                shadowOffset: { width: 0, height: 2 },
-                borderTopWidth: 0,
-                flexDirection: "row",
-                justifyContent: "space-around",
+              tabBarStyle: shouldHideTabs
+                ? { display: "none" } 
+                : {
+                    position: "absolute",
+                    bottom: 0,
+                    left: 16,
+                    right: 16,
+                    height: 55,
+                    backgroundColor: "rgba(100, 202, 150, 0.95)",
+                    borderRadius: 25,
+                    paddingHorizontal: 12,
+                    shadowColor: "#000",
+                    shadowOpacity: 0.15,
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowRadius: 12,
+                    elevation: 6,
+                  },
+              tabBarItemStyle: {
+                height: "100%",
+                justifyContent: "center",
                 alignItems: "center",
-                zIndex: 50,
-                borderTopLeftRadius: 12,
-                borderTopRightRadius: 12,
-                elevation: 5,
+                marginHorizontal: 45,
               },
-              tabBarShowLabel: false,
+              tabBarLabelStyle: {
+                fontSize: 12,
+                fontWeight: "600",
+                color: "white",
+                marginBottom: 4,
+              },
+              tabBarIconStyle: {
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: 4,
+              },
             }}
           >
             {/* Home Tab */}
             <Tabs.Screen
               name="Screens/Welcome"
               options={{
-                tabBarIcon: ({ color }) => (
-                  <View style={{ alignItems: "center" }}>
-                    <Ionicons name="home" size={24} color={color} />
-                    <Text style={{ color: "white", fontSize: 10 }}>Home</Text>
-                  </View>
+                tabBarIcon: ({ focused }) => (
+                  <MaterialIcons
+                    name="home"
+                    size={24}
+                    color={focused ? "white" : "rgba(255, 255, 255, 0.7)"}
+                  />
                 ),
+                tabBarLabel: "Home",
               }}
             />
 
@@ -76,12 +86,14 @@ export default function RootLayout() {
             <Tabs.Screen
               name="components/Products/Products"
               options={{
-                tabBarIcon: ({ color }) => (
-                  <View style={{ alignItems: "center" }}>
-                    <Ionicons name="bag" size={24} color={color} />
-                    <Text style={{ color: "white", fontSize: 10 }}>Products</Text>
-                  </View>
+                tabBarIcon: ({ focused }) => (
+                  <MaterialIcons
+                    name="local-mall"
+                    size={24}
+                    color={focused ? "white" : "rgba(255, 255, 255, 0.7)"}
+                  />
                 ),
+                tabBarLabel: "Products",
               }}
             />
 
@@ -89,12 +101,14 @@ export default function RootLayout() {
             <Tabs.Screen
               name="Screens/Account"
               options={{
-                tabBarIcon: ({ color }) => (
-                  <View style={{ alignItems: "center" }}>
-                    <Ionicons name="person-circle" size={24} color={color} />
-                    <Text style={{ color: "white", fontSize: 10 }}>Account</Text>
-                  </View>
+                tabBarIcon: ({ focused }) => (
+                  <MaterialIcons
+                    name="account-circle"
+                    size={24}
+                    color={focused ? "white" : "rgba(255, 255, 255, 0.7)"}
+                  />
                 ),
+                tabBarLabel: "Account",
               }}
             />
 
@@ -102,16 +116,18 @@ export default function RootLayout() {
             <Tabs.Screen
               name="components/Cart/Cart"
               options={{
-                tabBarIcon: ({ color }) => (
-                  <View style={{ alignItems: "center" }}>
-                    <Ionicons name="cart" size={24} color={color} />
-                    <Text style={{ color: "white", fontSize: 10 }}>Cart</Text>
-                  </View>
+                tabBarIcon: ({ focused }) => (
+                  <MaterialIcons
+                    name="shopping-cart"
+                    size={24}
+                    color={focused ? "white" : "rgba(255, 255, 255, 0.7)"}
+                  />
                 ),
+                tabBarLabel: "Cart",
               }}
             />
           </Tabs>
-        )}
+        </SafeAreaView>
       </PersistGate>
     </Provider>
   );
