@@ -10,8 +10,8 @@ import { addToCart } from "../components/Cart/cartReducer";
 interface Product {
   id: number;
   name: string;
-  price: number;
-  images: { src: string }[];
+  price: string;
+  images: string;
   stock_status: string;
   description: string;
   features: string[];
@@ -38,7 +38,7 @@ export default function Item() {
           setProduct({
             id: productData.id,
             name: productData.name || "Unknown Product",
-            images: productData.images || [],
+            images: productData.image || [],
             price: productData.price || "N/A",
             stock_status: productData.stock_status || "N/A",
             description: productData.description || "No description available.",
@@ -134,9 +134,9 @@ export default function Item() {
         <Animated.View style={{ opacity: fadeValue }}>
           <View className="items-center mb-6">
             <Image
-              source={{ uri: product.images[0]?.src || "https://via.placeholder.com/150" }}
-              className="w-80 h-80 rounded-2xl shadow-lg border-2 border-[#64CA96E5]"
-              resizeMode="cover"
+              source={{ uri: product?.images || "https://via.placeholder.com/150" }}
+              className="w-60 h-60 rounded-lg"
+              resizeMode="contain"
             />
           </View>
         </Animated.View>
