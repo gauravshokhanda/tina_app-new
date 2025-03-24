@@ -32,7 +32,6 @@ interface CartItem extends Product {
 export default function Products() {
   const router = useRouter();
   const { categoryId } = useLocalSearchParams();
-  console.log("categoryid", categoryId);
   const { token } = useSelector((state: RootState) => state?.user);
   const dispatch = useDispatch<AppDispatch>();
   const cart = useSelector(
@@ -46,14 +45,14 @@ export default function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        console.log("Fetching with categoryId:", categoryId);
+        //Alert.alert("Fetching Products", `Fetching with categoryId: ${categoryId}`);
         const endpoint = categoryId
           ? `/shortapi/v1/products/${categoryId}`
           : "/shortapi/v1/products";
         const productData = await client
           .getProducts(endpoint, token)
           .catch((err) => { 
-            console.error("API Error:", err);
+            Alert.alert("API Error", err.message);
             return [];
           });
         const formattedProducts = productData.map((item: any) => ({
@@ -62,10 +61,9 @@ export default function Products() {
           image: item.image && item.image.length > 0 ? { uri: item.image } : "",
           price: item.price || "N/A",
         }));
-        console.log("formattedProducts",formattedProducts)
+        //Alert.alert("Products Loaded", `Loaded ${formattedProducts.length} products`);
         setProducts(formattedProducts);
       } catch (error) {
-        console.error("Failed to fetch products:", error);
         Alert.alert("Error", "Failed to load products. Please try again.", [
           {
             text: "Retry",
@@ -113,7 +111,6 @@ export default function Products() {
           quantityToAdd,
           token
         );
-        console.log("Add to Cart API Response:", response);
         Alert.alert("Success", response?.message || "Product added to cart", [
           {
             text: "View Cart",
@@ -129,22 +126,16 @@ export default function Products() {
           },
         ]);
       } catch (error: any) {
-        console.error("Failed to add to cart via API:", error);
-        Alert.alert(
-          "Error",
-          error.response?.data?.message ||
-            "Failed to add to cart. Please try again.",
-          [
-            {
-              text: "Retry",
-              onPress: () => handleAddToCart(product),
-            },
-            {
-              text: "Cancel",
-              style: "cancel",
-            },
-          ]
-        );
+        Alert.alert("Error", error.response?.data?.message || "Failed to add to cart.", [
+          {
+            text: "Retry",
+            onPress: () => handleAddToCart(product),
+          },
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+        ]);
         // Revert the local cart state if the API fails
         dispatch(removeFromCart(product.id));
       } finally {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -51,8 +51,9 @@ const LoggedInAccount = () => {
                     isLoggedIn: true,
                 })
             );
+            Alert.alert("Success", "User data loaded successfully.");
         } catch (error) {
-            console.error("Error fetching user data:", error);
+            Alert.alert("Error", "Failed to fetch user data. Redirecting to login...");
             router.push("/components/Users/SignIn"); 
         } finally {
             setLoading(false);
@@ -63,9 +64,10 @@ const LoggedInAccount = () => {
         try {
             await dispatch(clearUserState());
             await AsyncStorage.removeItem("user");
+            Alert.alert("Logged Out", "You have been logged out successfully.");
             router.replace("/components/Users/SignIn");
         } catch (error) {
-            console.error("Logout failed:", error);
+            Alert.alert("Error", "Logout failed. Please try again.");
         }
     };
 

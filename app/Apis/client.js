@@ -18,7 +18,7 @@ const login = async (data) => {
         const response = await Client.post("/jwt-auth/v1/token", data);
         return response;
     } catch (error) {
-        console.error("Login API Error:", error.response?.data || error.message);
+        Alert.alert("Login API Error:", error.response?.data || error.message);
         throw error;
     }
 };
@@ -30,7 +30,7 @@ const signup = async (data) => {
         const response = await Client.post("/custom/v1/signup", data);
         return response;
     } catch (error) {
-        console.error("Signup API Error:", error.response?.data || error.message);
+        Alert.alert("Signup API Error:", error.response?.data || error.message);
         throw error;
     }
 };
@@ -47,7 +47,7 @@ const getProducts = async (endpoint,token) => {
         // console.log("response data",response.data)
         return response.data;
     } catch (error) {
-        console.error("Error fetching products:", error.response?.data || error.message);
+        Alert.alert("Error fetching products:", error.response?.data || error.message);
         throw error;
     }
 };
@@ -60,7 +60,7 @@ const getCategories = async (token) => {
         });
         return response.data;
     } catch (error) {
-        console.error("Error fetching categories:", error.response?.data || error.message);
+        Alert.alert("Error fetching categories:", error.response?.data || error.message);
         throw error;
     }
 };
@@ -74,7 +74,7 @@ const getUser = async (token) => {
         });
         return response.data; 
     } catch (error) {
-        console.error("Error fetching user data:", error.response?.data || error.message);
+        Alert.alert("Error fetching user data:", error.response?.data || error.message);
         throw error;
     }
 };
@@ -100,7 +100,7 @@ const addToCart = async (productId, quantity, token) => {
         
         return response.data;
     } catch (error) {
-        console.error("Add to Cart API Error:", error.response?.data || error.message);
+        Alert.alert("Add to Cart API Error:", error.response?.data || error.message);
         throw error;
     }
 };
@@ -114,7 +114,7 @@ const getProductById = async (productId, token) => {
         });
         return response.data;
     } catch (error) {
-        console.error("Error fetching product details:", error.response?.data || error.message);
+        Alert.alert("Error fetching product details:", error.response?.data || error.message);
         throw error;
     }
 };

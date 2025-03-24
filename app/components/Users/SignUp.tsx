@@ -7,6 +7,7 @@ import { setUser } from "./userReducer";
 import type { AppDispatch } from "../../Services/store";
 import Client from "../../Apis/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Loading from "../../components/Loading/Loading";
 import Animated, { 
   useSharedValue, 
   useAnimatedStyle, 
@@ -18,7 +19,7 @@ import Animated, {
 function SignupScreen() {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const [isLoading, setIsLoading] = useState(false);
+  const [loading, setLoading] = useState<boolean>(true);
   
   // Animation values
   const titleOpacity = useSharedValue(0);
@@ -64,6 +65,9 @@ function SignupScreen() {
     router.push("./SignedUp");
   };
 
+  if (loading) {
+      return <Loading />;
+    }
   return (
     <View className="flex-1 bg-white px-6">
       <Stack.Screen options={{ headerShown: false }} />

@@ -7,6 +7,7 @@ import {
   ScrollView,
   ActivityIndicator,
   FlatList,
+  Alert,
 } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -56,7 +57,7 @@ export default function Welcome() {
         // console.log("formattedProducts", formattedProducts);
         setProducts(formattedProducts);
       } catch (error) {
-        console.error("Failed to fetch products:", error);
+        Alert.alert("Error", "Failed to fetch products");
       } finally {
         setLoading(false);
       }
@@ -86,7 +87,7 @@ export default function Welcome() {
         }));
         setCategory(formattedCategory);
       } catch (error) {
-        console.error("Failed to fetch Categories:", error);
+        Alert.alert("Error", "Failed to fetch categories");
       } finally {
         setLoading(false);
       }

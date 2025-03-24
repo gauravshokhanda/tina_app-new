@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image, Animated, ActivityIndicator } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image, Animated, ActivityIndicator, Alert } from "react-native";
 import { useRouter, Stack, useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +20,7 @@ interface Product {
 export default function Item() {
   const router = useRouter();
   const { productId } = useLocalSearchParams(); 
-  console.log("ProductId from params:", productId);
+  //Alert.alert("ProductId from params: " + productId);
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const fadeValue = useState(new Animated.Value(0))[0]; 
@@ -33,7 +33,7 @@ export default function Item() {
       setLoading(true);
       try {
         const productData = await client.getProductById(productId, token);
-        console.log("API Response:", productData);
+        //Alert.alert("API Response: " + JSON.stringify(productData));
 
         if (productData) {
           setProduct({
@@ -47,7 +47,7 @@ export default function Item() {
           });
         }
       } catch (error) {
-        console.error("Failed to fetch product:", error);
+        Alert.alert("Failed to fetch product: " + error);
       } finally {
         setLoading(false);
       }
@@ -86,7 +86,7 @@ export default function Item() {
       // Navigate to Cart page
       router.push("/components/Cart/Cart");
     } catch (error) {
-      console.error("Failed to add to cart:", error);
+      Alert.alert("Failed to add to cart: " + error);
     }
   };
 
