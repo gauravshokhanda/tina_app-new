@@ -41,7 +41,6 @@ const getProducts = async (endpoint,token) => {
     try {
         const response = await Client.get(endpoint, {
             headers: {
-                "Authorization": "Basic " + btoa("ck_14ef07aa2b169178c93dd7cda910d7d7e306ef1b:cs_855830329384328e92c820d1b1d2ff4a8fa2b3ee"),
                 "Content-Type": "application/json"
             },
         });
@@ -54,9 +53,8 @@ const getProducts = async (endpoint,token) => {
 };
 const getCategories = async (token) => {
     try {
-        const response = await Client.get("/wc/v3/products/categories", {
+        const response = await Client.get("/shortapi/v1/categories", {
             headers: {
-                "Authorization": "Basic " + btoa("ck_14ef07aa2b169178c93dd7cda910d7d7e306ef1b:cs_855830329384328e92c820d1b1d2ff4a8fa2b3ee"),
                 "Content-Type": "application/json"
             },
         });
@@ -108,9 +106,8 @@ const addToCart = async (productId, quantity, token) => {
 
 const getProductById = async (productId, token) => {
     try {
-        const response = await Client.get(`/wc/v3/products/${productId}?_fields=id,name,price,images,stock_status`, {
+        const response = await Client.get(`/shortapi/v1/product/${productId}`, {
             headers: {
-                "Authorization": "Basic " + btoa("ck_14ef07aa2b169178c93dd7cda910d7d7e306ef1b:cs_855830329384328e92c820d1b1d2ff4a8fa2b3ee"),
                 "Content-Type": "application/json"
             },
         });

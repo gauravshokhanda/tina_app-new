@@ -10,7 +10,7 @@ interface Product {
   id: number;
   name: string;
   price: string;
-  images: { src: string }[];
+  images: string;
   stock_status: string;
   description: string;
   features: string[]; 
@@ -37,7 +37,7 @@ export default function Item() {
           setProduct({
             id: productData.id,
             name: productData.name || "Unknown Product",
-            images: productData.images || [],
+            images: productData.image || [],
             price: productData.price || "N/A",
             stock_status: productData.stock_status || "N/A",
             description: productData.description || "No description available.",
@@ -108,7 +108,7 @@ export default function Item() {
         <Animated.View style={{ opacity: fadeValue }}>
           <View className="items-center mb-4">
             <Image
-              source={{ uri: product.images[0]?.src || "https://via.placeholder.com/150" }}
+              source={{ uri: product?.images || "https://via.placeholder.com/150" }}
               className="w-60 h-60 rounded-lg"
               resizeMode="contain"
             />
