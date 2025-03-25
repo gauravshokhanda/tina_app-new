@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+<<<<<<< HEAD
 import {
   View,
   Text,
@@ -7,6 +8,9 @@ import {
   ScrollView,
   SafeAreaView,
 } from "react-native";
+=======
+import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from "react-native";
+>>>>>>> staging
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -52,6 +56,7 @@ const LoggedInAccount = () => {
         email: user.email || "",
       });
 
+<<<<<<< HEAD
       dispatch(
         setUserState({
           ...user,
@@ -78,6 +83,37 @@ const LoggedInAccount = () => {
       console.error("Logout failed:", error);
     }
   };
+=======
+            
+            dispatch(
+                setUserState({
+                    ...user,
+                    token: authToken,
+                    name: user.name,
+                    user_email: user.email,
+                    isLoggedIn: true,
+                })
+            );
+            Alert.alert("Success", "User data loaded successfully.");
+        } catch (error) {
+            Alert.alert("Error", "Failed to fetch user data. Redirecting to login...");
+            router.push("/components/Users/SignIn"); 
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleLogout = async () => {
+        try {
+            await dispatch(clearUserState());
+            await AsyncStorage.removeItem("user");
+            Alert.alert("Logged Out", "You have been logged out successfully.");
+            router.replace("/components/Users/SignIn");
+        } catch (error) {
+            Alert.alert("Error", "Logout failed. Please try again.");
+        }
+    };
+>>>>>>> staging
 
   return (
     <SafeAreaView className="flex-1 bg-[#E6F2ED] px-4 pb-20">
@@ -226,6 +262,7 @@ const LoggedInAccount = () => {
         </Animated.View>
       </ScrollView>
 
+<<<<<<< HEAD
       {/* Bottom Navigation */}
       <View className="absolute bottom-0 left-0 right-0 bg-[#64CA96E5] p-2 shadow flex-row justify-around z-50 px-3">
         <TouchableOpacity
@@ -259,6 +296,51 @@ const LoggedInAccount = () => {
       </View>
     </SafeAreaView>
   );
+=======
+                {/* Others Section */}
+                <Animated.View entering={FadeInUp.duration(500).delay(400)}>
+                    <Text className="text-gray-700 font-bold text-lg mt-4">Others</Text>
+                    <View className="bg-white rounded-lg p-4 space-y-2 shadow-md mt-2">
+                        <TouchableOpacity
+                            onPress={() => router.push("/Screens/AboutUs")}
+                            className="flex-row justify-between items-center py-2"
+                        >
+                            <View className="flex-row items-center">
+                                <MaterialIcons name="info" size={22} color="#64CA96E5" />
+                                <Text className="ml-3 text-gray-800 text-lg">About Us</Text>
+                            </View>
+                            <MaterialIcons name="chevron-right" size={22} color="gray" />
+                        </TouchableOpacity>
+                        <View className="border-b border-gray-200 my-1" />
+                        <TouchableOpacity
+                            onPress={() => router.push("/components/Feedback/Help")}
+                            className="flex-row justify-between items-center py-2"
+                        >
+                            <View className="flex-row items-center">
+                                <MaterialIcons name="live-help" size={22} color="#64CA96E5" />
+                                <Text className="ml-3 text-gray-800 text-lg">FAQ</Text>
+                            </View>
+                            <MaterialIcons name="chevron-right" size={22} color="gray" />
+                        </TouchableOpacity>
+                    </View>
+                </Animated.View>
+            </ScrollView>
+
+            {/* Logout Button */}
+            <Animated.View entering={FadeInUp.duration(500).delay(500)}>
+                <TouchableOpacity
+                    onPress={handleLogout}
+                    className="bg-[#64CA96E5] py-3 px-6 rounded-lg flex-row items-center justify-center mt-8 mx-4 shadow-md"
+                >
+                    <MaterialIcons name="exit-to-app" size={22} color="white" />
+                    <Text className="text-white font-semibold ml-2 text-lg">Log Out</Text>
+                </TouchableOpacity>
+            </Animated.View>
+
+            
+        </View>
+    );
+>>>>>>> staging
 };
 
 export default LoggedInAccount;

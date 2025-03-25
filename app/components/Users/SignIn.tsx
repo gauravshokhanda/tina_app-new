@@ -19,7 +19,7 @@ export default function SignIn() {
     useEffect(() => {
         checkUserLogin();
     }, []);
-
+    
     const checkUserLogin = async () => {
         const storedUser = await AsyncStorage.getItem("user");
         if (storedUser) {
@@ -27,6 +27,7 @@ export default function SignIn() {
         }
     };
 
+    
     const handleSignIn = async () => {
         if (!username || !password) {
             Alert.alert("Error", "Please enter both username and password.");

@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
+<<<<<<< HEAD
 import { View, Text, TouchableOpacity, Image, ScrollView,SafeAreaView } from "react-native";
+=======
+import { View, Text, TouchableOpacity, Image, ScrollView, Alert } from "react-native";
+>>>>>>> staging
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import client from "../Apis/client"; 
@@ -31,10 +35,10 @@ export default function Categories() {
               id: item.id,
               name: item.name || item.title || "Unnamed Category",
               }));
-              console.log("formattedcategory",formattedCategory)
+              //Alert.alert("Categories Loaded", JSON.stringify(formattedCategory, null, 2)); 
               setCategory(formattedCategory);
           } catch (error) {
-              console.error("Failed to fetch Categories:", error);
+            Alert.alert("Error", "Failed to fetch categories.");
           } finally {
               setLoading(false);
           }
@@ -103,6 +107,7 @@ export default function Categories() {
           ))}
         </View>
       </ScrollView>
+<<<<<<< HEAD
 
       {/* Bottom Navigation Bar */}
       <View className="flex-row justify-around bg-[#64CA96E5] p-2 shadow">
@@ -124,5 +129,8 @@ export default function Categories() {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
+=======
+    </View>
+>>>>>>> staging
   );
 }

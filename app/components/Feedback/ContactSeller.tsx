@@ -113,6 +113,7 @@ export default function ContactSeller() {
           <Text className="text-gray-600">Phone: +91-9568259784</Text>
         </View>
 
+<<<<<<< HEAD
         {/* Testimonials */}
         <View className="bg-white p-4 rounded-lg shadow">
           <Text className="text-lg font-bold text-gray-800 mb-4">
@@ -159,3 +160,25 @@ export default function ContactSeller() {
     </SafeAreaView>
   );
 }
+=======
+                {/* Testimonials */}
+                <View className="bg-white p-4 rounded-lg shadow">
+                    <Text className="text-lg font-bold text-gray-800 mb-4">What Buyers Say</Text>
+                    <View className="mb-4">
+                        <Text className="text-gray-600 mb-1">
+                            "Great seller! Fast delivery and excellent communication."
+                        </Text>
+                        <Text className="text-sm text-gray-500 font-italic">- John Doe</Text>
+                    </View>
+                    <View className="mb-4">
+                        <Text className="text-gray-600 mb-1">
+                            "Highly recommended! The product was exactly as described."
+                        </Text>
+                        <Text className="text-sm text-gray-500 font-italic">- Jane Smith</Text>
+                    </View>
+                </View>
+            </ScrollView>
+        </View>
+    );
+}
+>>>>>>> staging

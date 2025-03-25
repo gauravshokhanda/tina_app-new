@@ -203,6 +203,7 @@ return (
         </View>
         </View>
     </ScrollView>
+<<<<<<< HEAD
 
     {/* Bottom Navigation */}
     <View className="flex-row justify-around bg-[#64CA96E5] p-2 shadow absolute bottom-0 left-0 right-0 rounded-t-[20px]">
@@ -236,5 +237,8 @@ return (
         </TouchableOpacity>
     </View>
     </SafeAreaView>
+=======
+    </View>
+>>>>>>> staging
 );
 }

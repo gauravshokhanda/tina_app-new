@@ -276,6 +276,7 @@ export default function Transactions() {
                     </View>
                 )}
             </ScrollView>
+<<<<<<< HEAD
 
             {/* Bottom Navigation Bar */}
             <View className="absolute bottom-0 left-0 right-0 flex-row justify-around bg-[#64CA96E5] p-2 shadow mt-7">
@@ -297,5 +298,8 @@ export default function Transactions() {
                 </TouchableOpacity>
             </View>
         </SafeAreaView>
+=======
+        </View>
+>>>>>>> staging
     );
 }

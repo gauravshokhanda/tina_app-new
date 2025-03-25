@@ -48,10 +48,17 @@ import Client from "../../Apis/client";
             email: trimmedEmail,
             password: trimmedPassword,
         };
+<<<<<<< HEAD
         // console.log("Sending data to API:", payload); 
 
         const response = await Client.signup(payload);
         // console.log("Signup Success:", response.data);
+=======
+        //console.log("Sending data to API:", payload); 
+
+        const response = await Client.signup(payload);
+        //console.log("Signup Success:", response.data);
+>>>>>>> staging
 
         if (response.data.success) {
             Alert.alert("Success", "Account created successfully!");

@@ -179,6 +179,7 @@ export default function PayWithCard() {
         <FontAwesome name="money" size={24} color="white" />
         <Text className="text-white font-bold ml-2">Pay Now</Text>
       </TouchableOpacity>
+<<<<<<< HEAD
 
       {/* Bottom Navigation Bar */}
       <View className="absolute bottom-0 left-0 right-0 bg-[#64CA96E5] p-3 flex-row justify-around shadow-md">
@@ -200,5 +201,8 @@ export default function PayWithCard() {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
+=======
+    </View>
+>>>>>>> staging
   );
 }

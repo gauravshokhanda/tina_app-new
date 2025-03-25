@@ -160,6 +160,7 @@ export default function MyOrders() {
           </TouchableOpacity>
         </View>
       </ScrollView>
+<<<<<<< HEAD
 
       {/* Bottom Navigation Bar */}
       <View className="flex-row justify-around bg-[#64CA96E5] p-2 shadow">
@@ -181,5 +182,8 @@ export default function MyOrders() {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
+=======
+    </View>
+>>>>>>> staging
   );
 }

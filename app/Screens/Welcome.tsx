@@ -7,7 +7,11 @@ import {
   ScrollView,
   ActivityIndicator,
   FlatList,
+<<<<<<< HEAD
   SafeAreaView
+=======
+  Alert,
+>>>>>>> staging
 } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -57,7 +61,7 @@ export default function Welcome() {
         // console.log("formattedProducts", formattedProducts);
         setProducts(formattedProducts);
       } catch (error) {
-        console.error("Failed to fetch products:", error);
+        Alert.alert("Error", "Failed to fetch products");
       } finally {
         setLoading(false);
       }
@@ -87,7 +91,7 @@ export default function Welcome() {
         }));
         setCategory(formattedCategory);
       } catch (error) {
-        console.error("Failed to fetch Categories:", error);
+        Alert.alert("Error", "Failed to fetch categories");
       } finally {
         setLoading(false);
       }
@@ -217,6 +221,7 @@ export default function Welcome() {
         </TouchableOpacity>
       </View>
 
+<<<<<<< HEAD
       {/* Bottom Navigation */}
       <View className="absolute bottom-0 left-0 right-0 bg-[#64CA96E5] p-2 shadow flex-row justify-around z-50">
         <TouchableOpacity
@@ -249,5 +254,9 @@ export default function Welcome() {
         </TouchableOpacity>
       </View>
     </SafeAreaView>
+=======
+      
+    </View>
+>>>>>>> staging
   );
 }

@@ -48,13 +48,14 @@ export default function Products() {
     const fetchProducts = async () => {
       try {
         // console.log("Fetching with categoryId:", categoryId);
+        //Alert.alert("Fetching Products", `Fetching with categoryId: ${categoryId}`);
         const endpoint = categoryId
           ? `/shortapi/v1/products/${categoryId}`
           : "/shortapi/v1/products";
         const productData = await client
           .getProducts(endpoint, token)
           .catch((err) => { 
-            console.error("API Error:", err);
+            Alert.alert("API Error", err.message);
             return [];
           });
         const formattedProducts = productData.map((item: any) => ({
@@ -63,10 +64,9 @@ export default function Products() {
           image: item.image && item.image.length > 0 ? { uri: item.image } : "",
           price: item.price || "N/A",
         }));
-        // console.log("formattedProducts",formattedProducts)
+        //Alert.alert("Products Loaded", `Loaded ${formattedProducts.length} products`);
         setProducts(formattedProducts);
       } catch (error) {
-        console.error("Failed to fetch products:", error);
         Alert.alert("Error", "Failed to load products. Please try again.", [
           {
             text: "Retry",
@@ -114,7 +114,6 @@ export default function Products() {
           quantityToAdd,
           token
         );
-        // console.log("Add to Cart API Response:", response);
         Alert.alert("Success", response?.message || "Product added to cart", [
           {
             text: "View Cart",
@@ -130,22 +129,16 @@ export default function Products() {
           },
         ]);
       } catch (error: any) {
-        console.error("Failed to add to cart via API:", error);
-        Alert.alert(
-          "Error",
-          error.response?.data?.message ||
-            "Failed to add to cart. Please try again.",
-          [
-            {
-              text: "Retry",
-              onPress: () => handleAddToCart(product),
-            },
-            {
-              text: "Cancel",
-              style: "cancel",
-            },
-          ]
-        );
+        Alert.alert("Error", error.response?.data?.message || "Failed to add to cart.", [
+          {
+            text: "Retry",
+            onPress: () => handleAddToCart(product),
+          },
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+        ]);
         // Revert the local cart state if the API fails
         dispatch(removeFromCart(product.id));
       } finally {
@@ -315,37 +308,7 @@ export default function Products() {
         )}
       />
 
-      {/* Bottom Navigation Bar */}
-      <View className="absolute bottom-0 left-0 right-0 flex-row justify-around bg-[#64CA96E5] p-2 shadow mt-7">
-        <TouchableOpacity
-          onPress={() => router.push("/Screens/Welcome")}
-          className="items-center"
-        >
-          <MaterialIcons name="home" size={24} color="white" />
-          <Text className="text-white text-xs">Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => router.push("/components/Products/Products")}
-          className="items-center"
-        >
-          <MaterialIcons name="local-mall" size={24} color="white" />
-          <Text className="text-white text-xs">Products</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => router.push("/Screens/Account")}
-          className="items-center"
-        >
-          <MaterialIcons name="account-circle" size={24} color="white" />
-          <Text className="text-white text-xs">Account</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => router.push("/components/Cart/Cart")}
-          className="items-center"
-        >
-          <MaterialIcons name="shopping-cart" size={24} color="white" />
-          <Text className="text-white text-xs">Cart</Text>
-        </TouchableOpacity>
-      </View>
+
     </SafeAreaView>
   );
 }
