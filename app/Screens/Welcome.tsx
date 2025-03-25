@@ -7,11 +7,8 @@ import {
   ScrollView,
   ActivityIndicator,
   FlatList,
-<<<<<<< HEAD
-  SafeAreaView
-=======
   Alert,
->>>>>>> staging
+  SafeAreaView
 } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -112,7 +109,6 @@ export default function Welcome() {
 
   return (
     <SafeAreaView className="flex-1 bg-[#d8f4ed] mx-2">
-      <Stack.Screen options={{ headerShown: false }} />
 
       {/* Welcome Section */}
       <View className="flex-row justify-between items-center mb-5">
@@ -132,7 +128,7 @@ export default function Welcome() {
       </View>
 
       {/* Categories Section */}
-      <View className="mb-5 px-4">
+      <View className=" px-4">
         <Text className="text-lg font-bold mb-4 pb-2">Categories</Text>
 
         <FlatList
@@ -177,7 +173,7 @@ export default function Welcome() {
       </View>
 
       <View className="mb-5 px-4">
-        <Text className="text-lg font-bold mb-4 pb-2">Products</Text>
+        <Text className="text-lg font-bold pb-2">Products</Text>
 
         <FlatList
           data={products}
@@ -221,42 +217,7 @@ export default function Welcome() {
         </TouchableOpacity>
       </View>
 
-<<<<<<< HEAD
-      {/* Bottom Navigation */}
-      <View className="absolute bottom-0 left-0 right-0 bg-[#64CA96E5] p-2 shadow flex-row justify-around z-50">
-        <TouchableOpacity
-          onPress={() => router.push("/Screens/Welcome")}
-          className="items-center"
-        >
-          <MaterialIcons name="home" size={24} color="white" />
-          <Text className="text-white text-xs">Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => router.push("/components/Products/Products")}
-          className="items-center"
-        >
-          <MaterialIcons name="local-mall" size={24} color="white" />
-          <Text className="text-white text-xs">Products</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => router.push("/Screens/Account")}
-          className="items-center"
-        >
-          <MaterialIcons name="account-circle" size={24} color="white" />
-          <Text className="text-white text-xs">Account</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => router.push("/components/Cart/Cart")}
-          className="items-center"
-        >
-          <MaterialIcons name="shopping-cart" size={24} color="white" />
-          <Text className="text-white text-xs">Cart</Text>
-        </TouchableOpacity>
-      </View>
-    </SafeAreaView>
-=======
       
-    </View>
->>>>>>> staging
+    </SafeAreaView>
   );
 }

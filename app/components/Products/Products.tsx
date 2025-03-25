@@ -48,7 +48,7 @@ export default function Products() {
     const fetchProducts = async () => {
       try {
         // console.log("Fetching with categoryId:", categoryId);
-        //Alert.alert("Fetching Products", `Fetching with categoryId: ${categoryId}`);
+        // Alert.alert("Fetching Products", `Fetching with categoryId: ${categoryId}`);
         const endpoint = categoryId
           ? `/shortapi/v1/products/${categoryId}`
           : "/shortapi/v1/products";

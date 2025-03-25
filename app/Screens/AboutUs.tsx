@@ -203,42 +203,6 @@ return (
         </View>
         </View>
     </ScrollView>
-<<<<<<< HEAD
-
-    {/* Bottom Navigation */}
-    <View className="flex-row justify-around bg-[#64CA96E5] p-2 shadow absolute bottom-0 left-0 right-0 rounded-t-[20px]">
-        <TouchableOpacity
-        onPress={() => router.push("/Screens/Welcome")}
-        className="items-center"
-        >
-        <MaterialIcons name="home" size={24} color="white" />
-        <Text className="text-white text-xs">Home</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-        onPress={() => router.push("/components/Products/Products")}
-        className="items-center"
-        >
-        <MaterialIcons name="local-mall" size={24} color="white" />
-        <Text className="text-white text-xs">Products</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-        onPress={() => router.push('/Screens/Account')}
-        className="items-center"
-        >
-        <MaterialIcons name="account-circle" size={24} color="white" />
-        <Text className="text-white text-xs">Account</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-        onPress={() => router.push("/components/Cart/Cart")}
-        className="items-center"
-        >
-        <MaterialIcons name="shopping-cart" size={24} color="white" />
-        <Text className="text-white text-xs">Cart</Text>
-        </TouchableOpacity>
-    </View>
     </SafeAreaView>
-=======
-    </View>
->>>>>>> staging
 );
 }

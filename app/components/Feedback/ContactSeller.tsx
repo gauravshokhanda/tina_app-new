@@ -113,54 +113,6 @@ export default function ContactSeller() {
           <Text className="text-gray-600">Phone: +91-9568259784</Text>
         </View>
 
-<<<<<<< HEAD
-        {/* Testimonials */}
-        <View className="bg-white p-4 rounded-lg shadow">
-          <Text className="text-lg font-bold text-gray-800 mb-4">
-            What Buyers Say
-          </Text>
-          <View className="mb-4">
-            <Text className="text-gray-600 mb-1">
-              "Great seller! Fast delivery and excellent communication."
-            </Text>
-            <Text className="text-sm text-gray-500 font-italic">
-              - John Doe
-            </Text>
-          </View>
-          <View className="mb-4">
-            <Text className="text-gray-600 mb-1">
-              "Highly recommended! The product was exactly as described."
-            </Text>
-            <Text className="text-sm text-gray-500 font-italic">
-              - Jane Smith
-            </Text>
-          </View>
-        </View>
-      </ScrollView>
-
-      {/* Bottom Navigation Bar
-            <View className="flex-row justify-around bg-[#64CA96E5] p-2 shadow">
-                <TouchableOpacity onPress={() => router.push('/Screens/Welcome')} className="items-center">
-                    <MaterialIcons name="home" size={24} color="white" />
-                    <Text className="text-white text-xs">Home</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push('/components/Products/Products')} className="items-center">
-                    <MaterialIcons name="local-mall" size={24} color="white" />
-                    <Text className="text-white text-xs">Products</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push('/Screens/Account')} className="items-center">
-                    <MaterialIcons name="account-circle" size={24} color="white" />
-                    <Text className="text-white text-xs">Account</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push('/components/Cart/Cart')} className="items-center">
-                    <MaterialIcons name="shopping-cart" size={24} color="white" />
-                    <Text className="text-white text-xs">Cart</Text>
-                </TouchableOpacity>
-            </View> */}
-    </SafeAreaView>
-  );
-}
-=======
                 {/* Testimonials */}
                 <View className="bg-white p-4 rounded-lg shadow">
                     <Text className="text-lg font-bold text-gray-800 mb-4">What Buyers Say</Text>
@@ -178,7 +130,6 @@ export default function ContactSeller() {
                     </View>
                 </View>
             </ScrollView>
-        </View>
+        </SafeAreaView>
     );
 }
->>>>>>> staging
