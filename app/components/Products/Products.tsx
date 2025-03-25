@@ -58,7 +58,7 @@ export default function Products() {
         const formattedProducts = productData.map((item: any) => ({
           id: item.id,
           name: item.name || "name",
-          image: item.image && item.image.length > 0 ? { uri: item.image } : "",
+          image: item.image && item.image.length > 0 ? { uri: item.image } : require("../../../assets/images/mountain.png"), 
           price: item.price || "N/A",
         }));
         //Alert.alert("Products Loaded", `Loaded ${formattedProducts.length} products`);
