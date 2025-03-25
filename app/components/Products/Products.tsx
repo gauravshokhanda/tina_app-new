@@ -18,6 +18,7 @@ import { setProducts } from "./productReducer";
 import { RootState, AppDispatch } from "../../Services/store";
 import client from "../../Apis/client";
 import Loading from "../../components/Loading/Loading";
+import Toast from "react-native-toast-message";
 
 interface Product {
   id: number;
@@ -89,58 +90,50 @@ export default function Products() {
   const handleAddToCart = useCallback(
     async (product: Product) => {
       if (!token) {
-        Alert.alert("Error", "Please log in to continue.", [
-          {
-            text: "OK",
-            onPress: () => router.push("/components/Users/SignIn"),
-          },
-        ]);
+        Toast.show({
+          type: "info",
+          text1: "Login Required",
+          text2: "Please log in to continue.",
+          visibilityTime: 3000,
+          position: "top",
+          onPress: () => router.push("/components/Users/SignIn"),
+        });
         return;
       }
-
+  
       setAddingToCart(product.id); // Set loading state for this product
-
-      // Check if the product is already in the cart and get its current quantity
+  
       const currentQuantity = getQuantity(product.id);
       const quantityToAdd = currentQuantity > 0 ? currentQuantity + 1 : 1;
-
-      // Update the local cart state
+  
       dispatch(addToCart({ ...product, quantity: 1 })); // Increment by 1
-
+  
       try {
-        // Send the updated quantity to the backend
-        const response = await client.addToCart(
-          product.id,
-          quantityToAdd,
-          token
-        );
-        Alert.alert("Success", response?.message || "Product added to cart", [
-          {
-            text: "View Cart",
-            onPress: () =>
-              router.push({
-                pathname: "/components/Cart/Cart",
-                params: { cart: encodeURIComponent(JSON.stringify(cart)) },
-              }),
-          },
-          {
-            text: "Continue Shopping",
-            style: "cancel",
-          },
-        ]);
+        const response = await client.addToCart(product.id, quantityToAdd, token);
+        
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: response?.message || "Product added to cart!",
+          visibilityTime: 3000,
+          position: "top",
+          onPress: () =>
+            router.push({
+              pathname: "/components/Cart/Cart",
+              params: { cart: encodeURIComponent(JSON.stringify(cart)) },
+            }),
+        });
+  
       } catch (error: any) {
-        Alert.alert("Error", error.response?.data?.message || "Failed to add to cart.", [
-          {
-            text: "Retry",
-            onPress: () => handleAddToCart(product),
-          },
-          {
-            text: "Cancel",
-            style: "cancel",
-          },
-        ]);
-        // Revert the local cart state if the API fails
-        dispatch(removeFromCart(product.id));
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: error.response?.data?.message || "Failed to add to cart.",
+          visibilityTime: 3000,
+          position: "top",
+        });
+  
+        dispatch(removeFromCart(product.id)); // Revert local cart state
       } finally {
         setAddingToCart(null); // Reset loading state
       }

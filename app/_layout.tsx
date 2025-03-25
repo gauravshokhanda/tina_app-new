@@ -7,6 +7,7 @@ import store, { persistor } from "./Services/store";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityIndicator, View } from "react-native";
+import Toast from "react-native-toast-message";
 
 export default function RootLayout() {
   const pathname = usePathname();
@@ -49,6 +50,7 @@ export default function RootLayout() {
               <ActivityIndicator size="large" color="#64CA96" />
             </View>
           ) : (
+            <>
             <Tabs
               screenOptions={{
                 headerShown: false,
@@ -147,7 +149,10 @@ export default function RootLayout() {
                   tabBarLabel: "Cart",
                 }}
               />
+            
             </Tabs>
+            <Toast />
+            </>
           )}
         </SafeAreaView>
       </PersistGate>
