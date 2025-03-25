@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert,SafeAreaView } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -38,7 +38,7 @@ export default function Feedback() {
   };
 
   return (
-    <View className="flex-1 bg-[#E6F2ED] p-4">
+    <SafeAreaView className="flex-1 bg-[#E6F2ED] p-4">
       <Stack.Screen options={{ headerShown: false }} />
 
       {/* Header */}
@@ -146,6 +146,6 @@ export default function Feedback() {
           <Text className="text-white text-xs">Cart</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

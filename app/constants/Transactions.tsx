@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, TextInput, Alert, Platform } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image, FlatList, TextInput, Alert, Platform,SafeAreaView } from "react-native";
 import { useRouter, useLocalSearchParams, Stack } from "expo-router";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -109,7 +109,7 @@ export default function Transactions() {
     };
 
     return (
-        <View className="flex-1 bg-[#E6F2ED]">
+        <SafeAreaView className="flex-1 bg-[#E6F2ED]">
             <Stack.Screen options={{ headerShown: false }} />
 
             {/* Background Image */}
@@ -296,6 +296,6 @@ export default function Transactions() {
                     <Text className="text-white text-xs">Cart</Text>
                 </TouchableOpacity>
             </View>
-        </View>
+        </SafeAreaView>
     );
 }

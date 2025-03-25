@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image,SafeAreaView } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -7,7 +7,7 @@ export default function AboutUs() {
 const router = useRouter();
 
 return (
-    <View className="flex-1 bg-[#E6F2ED]">
+    <SafeAreaView className="flex-1 bg-[#E6F2ED]">
     <Stack.Screen options={{ headerShown: false }} />
 
     {/* Header */}
@@ -235,6 +235,6 @@ return (
         <Text className="text-white text-xs">Cart</Text>
         </TouchableOpacity>
     </View>
-    </View>
+    </SafeAreaView>
 );
 }

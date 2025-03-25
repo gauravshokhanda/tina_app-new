@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity,SafeAreaView } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 
@@ -7,7 +7,7 @@ export default function Terms() {
   const router = useRouter();
 
   return (
-    <View className="flex-1 bg-white p-6">
+    <SafeAreaView className="flex-1 bg-white p-6">
       {/* Hide header */}
       <Stack.Screen options={{ headerShown: false }} />
       {/* Header with Icon */}
@@ -105,6 +105,6 @@ export default function Terms() {
           I Accept
         </Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 }

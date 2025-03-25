@@ -48,10 +48,10 @@ import Client from "../../Apis/client";
             email: trimmedEmail,
             password: trimmedPassword,
         };
-        console.log("Sending data to API:", payload); 
+        // console.log("Sending data to API:", payload); 
 
         const response = await Client.signup(payload);
-        console.log("Signup Success:", response.data);
+        // console.log("Signup Success:", response.data);
 
         if (response.data.success) {
             Alert.alert("Success", "Account created successfully!");
@@ -189,7 +189,7 @@ import Client from "../../Apis/client";
                 }}
                 innerIconStyle={{ borderWidth: 2, borderRadius: 1 }}
                 onPress={(isChecked) => {
-                console.log("Checkbox checked:", isChecked); // Debug log
+                // console.log("Checkbox checked:", isChecked); 
                 setChecked(isChecked);
                 }}
             />

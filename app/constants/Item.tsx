@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image, Animated, ActivityIndicator } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image, Animated, ActivityIndicator,SafeAreaView } from "react-native";
 import { useRouter, Stack, useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
@@ -19,7 +19,7 @@ interface Product {
 export default function Item() {
   const router = useRouter();
   const { productId } = useLocalSearchParams(); 
-  console.log("ProductId from params:", productId);
+  // console.log("ProductId from params:", productId);
 
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -31,7 +31,7 @@ export default function Item() {
       setLoading(true);
       try {
         const productData = await client.getProductById(productId, token);
-        console.log("API Response:", productData);
+        // console.log("API Response:", productData);
 
         if (productData) {
           setProduct({
@@ -90,7 +90,7 @@ export default function Item() {
   }
 
   return (
-    <View className="flex-1 bg-gray-100">
+    <SafeAreaView className="flex-1 bg-gray-100">
       <Stack.Screen options={{ headerShown: false }} />
       <Animated.View style={{ opacity: fadeValue }}>
         <View className="flex-row items-center justify-between px-4 py-4">
@@ -175,6 +175,6 @@ export default function Item() {
           <Text className="text-white text-xs">Cart</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

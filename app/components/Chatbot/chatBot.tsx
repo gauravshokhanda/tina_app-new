@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView, Animated, Easing } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Animated, Easing,SafeAreaView } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 export default function ChatBot() {
@@ -72,7 +72,7 @@ export default function ChatBot() {
     const chatHeight = animation.interpolate({ inputRange: [0, 1], outputRange: [0, 400] });
 
     return (
-        <View className="flex-1 mt-[17%]">
+        <SafeAreaView className="flex-1 mt-[17%]">
             {/* Floating Chat Button */}
             <TouchableOpacity
                 onPress={toggleChat}
@@ -122,6 +122,6 @@ export default function ChatBot() {
                     </TouchableOpacity>
                 </View>
             </Animated.View>
-        </View>
+        </SafeAreaView>
     );
 }

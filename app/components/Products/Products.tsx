@@ -8,6 +8,7 @@ import {
   ImageSourcePropType,
   ActivityIndicator,
   Alert,
+  SafeAreaView
 } from "react-native";
 import { useRouter, Stack, useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -32,7 +33,7 @@ interface CartItem extends Product {
 export default function Products() {
   const router = useRouter();
   const { categoryId } = useLocalSearchParams();
-  console.log("categoryid", categoryId);
+  // console.log("categoryid", categoryId);
   const { token } = useSelector((state: RootState) => state?.user);
   const dispatch = useDispatch<AppDispatch>();
   const cart = useSelector(
@@ -46,7 +47,7 @@ export default function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        console.log("Fetching with categoryId:", categoryId);
+        // console.log("Fetching with categoryId:", categoryId);
         const endpoint = categoryId
           ? `/shortapi/v1/products/${categoryId}`
           : "/shortapi/v1/products";
@@ -62,7 +63,7 @@ export default function Products() {
           image: item.image && item.image.length > 0 ? { uri: item.image } : "",
           price: item.price || "N/A",
         }));
-        console.log("formattedProducts",formattedProducts)
+        // console.log("formattedProducts",formattedProducts)
         setProducts(formattedProducts);
       } catch (error) {
         console.error("Failed to fetch products:", error);
@@ -113,7 +114,7 @@ export default function Products() {
           quantityToAdd,
           token
         );
-        console.log("Add to Cart API Response:", response);
+        // console.log("Add to Cart API Response:", response);
         Alert.alert("Success", response?.message || "Product added to cart", [
           {
             text: "View Cart",
@@ -196,7 +197,7 @@ export default function Products() {
   }
 
   return (
-    <View className="flex-1 bg-[#E6F2ED]">
+    <SafeAreaView className="flex-1 bg-[#E6F2ED]">
       <Stack.Screen options={{ headerShown: false }} />
 
       {/* Header */}
@@ -345,6 +346,6 @@ export default function Products() {
           <Text className="text-white text-xs">Cart</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

@@ -1,6 +1,6 @@
 // HelpSupport.tsx
 import React, { useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image,SafeAreaView } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -66,7 +66,7 @@ export default function Help() {
 
 
   return (
-    <View className="flex-1 bg-[#E6F2ED]">
+    <SafeAreaView className="flex-1 bg-[#E6F2ED]">
       <Stack.Screen options={{ headerShown: false }} />
 
       {/* Header */}
@@ -205,6 +205,6 @@ export default function Help() {
           <Text className="text-white text-xs">Cart</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

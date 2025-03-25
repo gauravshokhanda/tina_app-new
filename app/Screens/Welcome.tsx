@@ -7,6 +7,7 @@ import {
   ScrollView,
   ActivityIndicator,
   FlatList,
+  SafeAreaView
 } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -106,7 +107,7 @@ export default function Welcome() {
   // ];
 
   return (
-    <View className="flex-1 bg-[#d8f4ed]">
+    <SafeAreaView className="flex-1 bg-[#d8f4ed] mx-2">
       <Stack.Screen options={{ headerShown: false }} />
 
       {/* Welcome Section */}
@@ -247,6 +248,6 @@ export default function Welcome() {
           <Text className="text-white text-xs">Cart</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

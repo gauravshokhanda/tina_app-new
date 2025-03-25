@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image,SafeAreaView } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons, FontAwesome, Ionicons, Entypo } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
@@ -34,7 +34,7 @@ export default function MyOrders() {
   }
 
   return (
-    <View className="flex-1 bg-[#E6F2ED]">
+    <SafeAreaView className="flex-1 bg-[#E6F2ED]">
       <Stack.Screen options={{ headerShown: false }} />
 
       {/* Header */}
@@ -180,6 +180,6 @@ export default function MyOrders() {
           <Text className="text-white text-xs">Cart</Text>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
