@@ -45,43 +45,34 @@ export default function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        //Alert.alert("Fetching Products", `Fetching with categoryId: ${categoryId}`);
         const endpoint = categoryId
           ? `/shortapi/v1/products/${categoryId}`
           : "/shortapi/v1/products";
-        const productData = await client
-          .getProducts(endpoint, token)
-          .catch((err) => { 
-            Alert.alert("API Error", err.message);
-            return [];
-          });
+        const productData = await client.getProducts(endpoint, token);
+  
+        //console.log("API Response: ", productData); 
+  
+        const baseURL = "https://appalachiantrashbgone.com/wp-json";
+  
         const formattedProducts = productData.map((item: any) => ({
           id: item.id,
-          name: item.name || "name",
-          image: item.image && item.image.length > 0 ? { uri: item.image } : require("../../../assets/images/mountain.png"), 
+          name: item.name || "Unnamed Product",
+          image: item.image?.src
+            ? { uri: item.image.src.startsWith("http") ? item.image.src : `${baseURL}${item.image.src}` }
+            : require("../../../assets/images/mountain.png"),
           price: item.price || "N/A",
         }));
-        //Alert.alert("Products Loaded", `Loaded ${formattedProducts.length} products`);
+  
         setProducts(formattedProducts);
       } catch (error) {
-        Alert.alert("Error", "Failed to load products. Please try again.", [
-          {
-            text: "Retry",
-            onPress: () => fetchProducts(),
-          },
-          {
-            text: "Cancel",
-            style: "cancel",
-            onPress: () => router.push("/Screens/Welcome"),
-          },
-        ]);
+        Alert.alert("Error fetching products:");
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchProducts();
-  }, [categoryId, token, router]);
+  }, [categoryId, token]);
 
   const handleAddToCart = useCallback(
     async (product: Product) => {

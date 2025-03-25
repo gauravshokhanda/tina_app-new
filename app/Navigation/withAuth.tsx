@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native"; 
+import { View, Text, TouchableOpacity,SafeAreaView } from "react-native"; 
 import { useSelector } from "react-redux";
 import { RootState } from "../Services/store";
 import { useRouter } from "expo-router"; 
@@ -12,7 +12,7 @@ const withAuth = (WrappedComponent: React.ComponentType) => {
 
         if (!isLoggedIn) {
         return (
-            <View className="flex-1 bg-[#E6F2ED] justify-center items-center">
+            <SafeAreaView className="flex-1 bg-[#E6F2ED] justify-center items-center">
             <Text className="text-2xl font-semibold text-gray-700">
                 Please log in to access this page
             </Text>
@@ -25,7 +25,7 @@ const withAuth = (WrappedComponent: React.ComponentType) => {
                 Log In
                 </Text>
             </TouchableOpacity>
-            </View>
+            </SafeAreaView>
         );
         }
 

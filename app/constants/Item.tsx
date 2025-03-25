@@ -1,11 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image, Animated, ActivityIndicator, Alert } from "react-native";
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  Animated,
+  ActivityIndicator,
+  Alert,
+  SafeAreaView,
+} from "react-native";
 import { useRouter, Stack, useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../Services/store";
 import client from "../Apis/client";
 import { addToCart } from "../components/Cart/cartReducer";
+import Toast from "react-native-toast-message";
 
 interface Product {
   id: number;
@@ -14,18 +25,19 @@ interface Product {
   images: string;
   stock_status: string;
   description: string;
-  features: string[]; 
+  features: string[];
 }
 
 export default function Item() {
   const router = useRouter();
-  const { productId } = useLocalSearchParams(); 
-  //Alert.alert("ProductId from params: " + productId);
+  const { productId } = useLocalSearchParams();
+  // console.log("ProductId from params:", productId);
+
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const fadeValue = useState(new Animated.Value(0))[0]; 
+  const fadeValue = useState(new Animated.Value(0))[0];
   const { token } = useSelector((state: RootState) => state?.user);
-  const [quantity, setQuantity] = useState<number>(1); 
+  const [quantity, setQuantity] = useState<number>(1);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -33,7 +45,7 @@ export default function Item() {
       setLoading(true);
       try {
         const productData = await client.getProductById(productId, token);
-        //Alert.alert("API Response: " + JSON.stringify(productData));
+        // console.log("API Response:", productData);
 
         if (productData) {
           setProduct({
@@ -43,7 +55,10 @@ export default function Item() {
             price: productData.price || "N/A",
             stock_status: productData.stock_status || "N/A",
             description: productData.description || "No description available.",
-            features: productData.meta_data?.find((meta: any) => meta.key === "features")?.value || [], 
+            features:
+              productData.meta_data?.find(
+                (meta: any) => meta.key === "features"
+              )?.value || [],
           });
         }
       } catch (error) {
@@ -54,7 +69,7 @@ export default function Item() {
     };
 
     fetchProductById();
-  }, [productId, token]); 
+  }, [productId, token]);
 
   useEffect(() => {
     Animated.timing(fadeValue, {
@@ -64,49 +79,70 @@ export default function Item() {
     }).start();
   }, []);
 
+
   const handleAddToCart = async () => {
     if (!product) return;
-
+  
     try {
       // Add to Redux store
       dispatch(
         addToCart({
           id: product.id,
-        name: product.name,
-        price: product.price,
-        image: { uri: product.images[0] || "https://via.placeholder.com/150" }, 
-        quantity: quantity,
+          name: product.name,
+          price: product.price,
+          image: { uri: product.images[0] || "https://via.placeholder.com/150" }, 
+          quantity: quantity,
         })
       );
   
-
       // Add to API
       await client.addToCart(product.id, quantity, token);
-
-      // Navigate to Cart page
-      router.push("/components/Cart/Cart");
+  
+      // Show success toast BEFORE navigating
+      Toast.show({
+        type: "success",
+        text1: "Added to Cart",
+        text2: `${product.name} has been added successfully!`,
+        visibilityTime: 2000, // Wait for 2 seconds before navigating
+        position: "top",
+      });
+  
+      // Delay navigation slightly to let the toast be visible
+      setTimeout(() => {
+        router.push("/components/Cart/Cart");
+      }, 2000);
+      
     } catch (error) {
-      Alert.alert("Failed to add to cart: " + error);
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Failed to add to cart. Please try again.",
+        visibilityTime: 3000,
+        position: "top",
+      });
     }
   };
-
+  
 
   if (loading) {
     return (
       <View className="flex-1 bg-[#E6F2ED] justify-center items-center">
         <Stack.Screen options={{ headerShown: false }} />
         <ActivityIndicator size="large" color="#64CA96E5" />
-        <Text className="text-xl font-semibold text-gray-700 mt-2">Loading Product...</Text>
+        <Text className="text-xl font-semibold text-gray-700 mt-2">
+          Loading Product...
+        </Text>
       </View>
     );
   }
-
 
   if (!product) {
     return (
       <View className="flex-1 bg-[#E6F2ED] justify-center items-center">
         <Stack.Screen options={{ headerShown: false }} />
-        <Text className="text-2xl font-semibold text-gray-700">Product not found</Text>
+        <Text className="text-2xl font-semibold text-gray-700">
+          Product not found
+        </Text>
         <TouchableOpacity
           onPress={() => router.push("/components/Products/Products")}
           className="bg-[#64CA96E5] px-6 py-3 rounded-lg mt-6"
@@ -118,11 +154,14 @@ export default function Item() {
   }
 
   return (
-    <View className="flex-1 bg-gray-100">
+    <SafeAreaView className="flex-1 bg-gray-100">
       <Stack.Screen options={{ headerShown: false }} />
       <Animated.View style={{ opacity: fadeValue }}>
         <View className="flex-row items-center justify-between px-4 py-4">
-          <TouchableOpacity onPress={() => router.back()} className="p-2 rounded-full bg-[#64CA96E5]">
+          <TouchableOpacity
+            onPress={() => router.back()}
+            className="p-2 rounded-full bg-[#64CA96E5]"
+          >
             <MaterialIcons name="arrow-left" size={20} color="white" />
           </TouchableOpacity>
           <Text className="text-lg font-semibold text-gray-700">
@@ -133,28 +172,40 @@ export default function Item() {
       </Animated.View>
 
       <ScrollView className="px-4 mt-4 mb-20">
-        {/*product image*/ }
+        {/*product image*/}
         <Animated.View style={{ opacity: fadeValue }}>
           <View className="items-center mb-6">
             <Image
-              source={{ uri: product.images || "https://via.placeholder.com/150" }}
+              source={{
+                uri: product.images || "https://via.placeholder.com/150",
+              }}
               className="w-80 h-80 rounded-2xl shadow-lg border-2 border-[#64CA96E5]"
               resizeMode="cover"
             />
           </View>
         </Animated.View>
 
-        {/*Name, price, stock Status*/ }
+        {/*Name, price, stock Status*/}
         <Animated.View style={{ opacity: fadeValue }}>
           <View className="bg-white p-6 rounded-2xl shadow-lg mb-6">
-            <Text className="text-3xl font-extrabold text-gray-900 mb-3">{product.name}</Text>
+            <Text className="text-3xl font-extrabold text-gray-900 mb-3">
+              {product.name}
+            </Text>
             <View className="flex-row items-center mb-3">
-              <MaterialIcons name="account-balance-wallet" size={28} color="#64CA96E5" />
-              <Text className="text-2xl font-bold text-[#64CA96E5] ml-2">${product.price}</Text>
+              <MaterialIcons
+                name="account-balance-wallet"
+                size={28}
+                color="#64CA96E5"
+              />
+              <Text className="text-2xl font-bold text-[#64CA96E5] ml-2">
+                ${product.price}
+              </Text>
             </View>
             <View className="flex-row items-start">
               <MaterialIcons name="inventory" size={20} color="#64CA96E5" />
-              <Text className="text-gray-700 ml-2 flex-1 text-lg">Stock Status: {product.stock_status}</Text>
+              <Text className="text-gray-700 ml-2 flex-1 text-lg">
+                Stock Status: {product.stock_status}
+              </Text>
             </View>
           </View>
         </Animated.View>
@@ -162,7 +213,9 @@ export default function Item() {
         {/* Quantity Selector */}
         <Animated.View style={{ opacity: fadeValue }}>
           <View className="bg-white p-6 rounded-2xl shadow-lg mb-6">
-            <Text className="text-xl font-extrabold text-gray-900 mb-4">Quantity</Text>
+            <Text className="text-xl font-extrabold text-gray-900 mb-4">
+              Quantity
+            </Text>
             <View className="flex-row items-center justify-center">
               <TouchableOpacity
                 onPress={() => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))}
@@ -184,7 +237,9 @@ export default function Item() {
         {/* Description Section */}
         <Animated.View style={{ opacity: fadeValue }}>
           <View className="bg-white p-4 rounded-lg shadow-lg mb-4">
-            <Text className="text-xl font-extrabold text-gray-900 mb-3">📝 Description</Text>
+            <Text className="text-xl font-extrabold text-gray-900 mb-3">
+              📝 Description
+            </Text>
             <Text className="text-gray-700 text-lg">{product.description}</Text>
           </View>
         </Animated.View>
@@ -192,7 +247,9 @@ export default function Item() {
         {/* Features Section */}
         <Animated.View style={{ opacity: fadeValue }}>
           <View className="bg-white p-4 rounded-lg shadow-lg mb-4">
-            <Text className="text-xl font-extrabold text-gray-900 mb-3">⚡ Features</Text>
+            <Text className="text-xl font-extrabold text-gray-900 mb-3">
+              ⚡ Features
+            </Text>
             {product.features.map((feature, index) => (
               <View key={index} className="flex-row items-center mb-2">
                 <MaterialIcons name="check-circle" size={20} color="green" />
@@ -212,9 +269,7 @@ export default function Item() {
           </TouchableOpacity>
         </Animated.View>
       </ScrollView>
-
-      
-    </View>
+    </SafeAreaView>
   );
 }
 
