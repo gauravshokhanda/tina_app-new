@@ -25,15 +25,18 @@ function SignupScreen() {
   const titleOpacity = useSharedValue(0);
   const buttonScale = useSharedValue(0.8);
   const imageTranslateY = useSharedValue(-50);
-    useEffect(() => {
-      checkUserLogin();
+  useEffect(() => {
+    checkUserLogin();
   }, []);
 
   const checkUserLogin = async () => {
-      const storedUser = await AsyncStorage.getItem("user");
-      if (storedUser) {
-          router.push("/Screens/Welcome");
-      }
+    const storedUser = await AsyncStorage.getItem("user");
+    const fromLogout = await AsyncStorage.getItem("fromLogout");
+    
+    if (storedUser && !fromLogout) {
+      router.push("/Screens/Welcome");
+    }
+    setLoading(false);
   };
   useEffect(() => {
     // Animation sequence

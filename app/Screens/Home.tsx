@@ -6,24 +6,24 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Home() {
   const router = useRouter();
-
   const animation = useRef(new Animated.Value(0)).current;
-
-
 
   useEffect(() => {
     checkUserLogin();
-}, []);
+  }, []);
 
-const checkUserLogin = async () => {
+  const checkUserLogin = async () => {
     const storedUser = await AsyncStorage.getItem("user");
-    if (storedUser) {
-        router.push("/Screens/Welcome");
+    const fromLogout = await AsyncStorage.getItem("fromLogout");
+    
+    if (storedUser && !fromLogout) {
+      router.push("/Screens/Welcome");
+    } else {
+      await AsyncStorage.removeItem("fromLogout");
     }
-};
+  };
 
   useEffect(() => {
-    // Start animation
     Animated.timing(animation, {
       toValue: 1,
       duration: 1000,
@@ -31,7 +31,6 @@ const checkUserLogin = async () => {
       useNativeDriver: true, 
     }).start();
 
-    // Navigate after 2 seconds
     const timer = setTimeout(() => {
       router.push("/components/Users/SignUp");
     }, 3000);
@@ -39,7 +38,6 @@ const checkUserLogin = async () => {
     return () => clearTimeout(timer); 
   }, []);
 
-  
   const opacity = animation.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 1],
@@ -59,18 +57,12 @@ const checkUserLogin = async () => {
     <View className="flex-1 bg-white">
       <Stack.Screen options={{ headerShown: false }} />
       <LinearGradient
-        colors={["#22c55e", "#a7f3d0", "#ffffff", "#ffffff"]} //gradient color
+        colors={["#22c55e", "#a7f3d0", "#ffffff", "#ffffff"]}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
       >
-        <Animated.View
-          style={{
-            opacity,
-            transform: [{ scale }, { translateY }],
-            alignItems: "center",
-          }}
-        >
+        <Animated.View style={{ opacity, transform: [{ scale }, { translateY }], alignItems: "center" }}>
           <Image
             source={require("../../assets/images/HomeScreen.png")}
             className="w-48 h-48" 
@@ -82,31 +74,9 @@ const checkUserLogin = async () => {
               shadowRadius: 5,
             }}
           />
-          <Text 
-            className="text-green-600 text-4xl font-bold mt-6" 
-            style={{ 
-              textShadowColor: "rgba(0, 0, 0, 0.2)", 
-              textShadowOffset: { width: 1, height: 1 }, 
-              textShadowRadius: 2,
-            }}
-          >
-            Appalachian
-          </Text>
-          <Text 
-            className="text-green-600 text-4xl font-bold mb-8" 
-            style={{ 
-              textShadowColor: "rgba(0, 0, 0, 0.2)", 
-              textShadowOffset: { width: 1, height: 1 }, 
-              textShadowRadius: 2,
-            }}
-          >
-            Trash-B-Gone
-          </Text>
-          <ActivityIndicator 
-            size="large" 
-            color="#22c55e" 
-            style={{ transform: [{ scale: 1.5 }], marginTop: 40 }} // loading circle
-          />
+          <Text className="text-green-600 text-4xl font-bold mt-6">Appalachian</Text>
+          <Text className="text-green-600 text-4xl font-bold mb-8">Trash-B-Gone</Text>
+          <ActivityIndicator size="large" color="#22c55e" style={{ transform: [{ scale: 1.5 }], marginTop: 40 }} />
         </Animated.View>
       </LinearGradient>
     </View>

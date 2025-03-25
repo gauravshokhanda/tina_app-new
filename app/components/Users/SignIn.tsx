@@ -22,7 +22,9 @@ export default function SignIn() {
     
     const checkUserLogin = async () => {
         const storedUser = await AsyncStorage.getItem("user");
-        if (storedUser) {
+        const fromLogout = await AsyncStorage.getItem("fromLogout");
+        
+        if (storedUser && !fromLogout) {
             router.push("/Screens/Welcome");
         }
     };
