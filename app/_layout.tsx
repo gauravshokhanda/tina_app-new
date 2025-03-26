@@ -15,7 +15,7 @@ export default function RootLayout() {
 
   // Simulate Welcome/Home screen loading
   useEffect(() => {
-    if (pathname === "/Screens/Welcome" || pathname === "/Screens/Home") {
+    if (pathname === "/Screens/Welcome") {
       setIsWelcomeLoading(true);
       setTimeout(() => {
         setIsWelcomeLoading(false);
@@ -61,9 +61,10 @@ export default function RootLayout() {
                       bottom: 0,
                       left: 16,
                       right: 16,
-                      height: 55,
+                      height: 50,
                       backgroundColor: "rgba(100, 202, 150, 0.95)",
-                      borderRadius: 25,
+                      borderTopLeftRadius: 20, 
+                      borderTopRightRadius: 20,
                       paddingHorizontal: 12,
                       shadowColor: "#000",
                       shadowOpacity: 0.15,

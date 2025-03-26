@@ -51,7 +51,7 @@ const LoggedInAccount = () => {
                     isLoggedIn: true,
                 })
             );
-            Alert.alert("Success", "User data loaded successfully.");
+            //Alert.alert("Success", "User data loaded successfully.");
         } catch (error) {
             Alert.alert("Error", "Failed to fetch user data. Redirecting to login...");
             router.push("/components/Users/SignIn"); 

@@ -33,7 +33,7 @@ export default function Home() {
 
     const timer = setTimeout(() => {
       router.push("/components/Users/SignUp");
-    }, 3000);
+    }, 2000);
 
     return () => clearTimeout(timer); 
   }, []);
