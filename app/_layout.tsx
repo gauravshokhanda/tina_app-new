@@ -1,4 +1,4 @@
-import { Tabs, Stack, usePathname } from "expo-router";
+import { Tabs, usePathname } from "expo-router";
 import React, { useState, useEffect } from "react";
 import "../global.css";
 import { Provider } from "react-redux";
@@ -13,7 +13,6 @@ export default function RootLayout() {
   const pathname = usePathname();
   const [isWelcomeLoading, setIsWelcomeLoading] = useState(true);
 
-  // Simulate Welcome/Home screen loading
   useEffect(() => {
     if (pathname === "/Screens/Welcome") {
       setIsWelcomeLoading(true);
@@ -24,7 +23,7 @@ export default function RootLayout() {
       setIsWelcomeLoading(false);
     }
   }, [pathname]);
-
+  
   const hiddenRoutes = [
     "/components/Users/SignUp",
     "/components/Users/SignIn",
@@ -35,22 +34,20 @@ export default function RootLayout() {
     "/components/Feedback/TrackShipment",
     "/components/Payments/PayWithCard",
     "/Screens/Settings",
-    "/Screens/Home", 
+    "/Screens/Home",
   ];
 
-
-  const shouldHideTabs = isWelcomeLoading || hiddenRoutes.some(route => pathname.startsWith(route));
+  const shouldHideTabs = isWelcomeLoading || hiddenRoutes.some(route => pathname === route);
 
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <SafeAreaView style={{ flex: 1, backgroundColor: "#E3F8F3" }}>
-          {isWelcomeLoading ? (
+          {isWelcomeLoading && pathname === "/Screens/Welcome" ? (
             <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
               <ActivityIndicator size="large" color="#64CA96" />
             </View>
           ) : (
-            <>
             <Tabs
               screenOptions={{
                 headerShown: false,
@@ -63,7 +60,7 @@ export default function RootLayout() {
                       right: 16,
                       height: 50,
                       backgroundColor: "rgba(100, 202, 150, 0.95)",
-                      borderTopLeftRadius: 20, 
+                      borderTopLeftRadius: 20,
                       borderTopRightRadius: 20,
                       paddingHorizontal: 12,
                       shadowColor: "#000",
@@ -91,7 +88,6 @@ export default function RootLayout() {
                 },
               }}
             >
-              {/* Home Tab */}
               <Tabs.Screen
                 name="Screens/Welcome"
                 options={{
@@ -105,8 +101,6 @@ export default function RootLayout() {
                   tabBarLabel: "Home",
                 }}
               />
-
-              {/* Products Tab */}
               <Tabs.Screen
                 name="components/Products/Products"
                 options={{
@@ -120,8 +114,6 @@ export default function RootLayout() {
                   tabBarLabel: "Products",
                 }}
               />
-
-              {/* Account Tab */}
               <Tabs.Screen
                 name="Screens/Account"
                 options={{
@@ -135,8 +127,6 @@ export default function RootLayout() {
                   tabBarLabel: "Account",
                 }}
               />
-
-              {/* Cart Tab */}
               <Tabs.Screen
                 name="components/Cart/Cart"
                 options={{
@@ -150,11 +140,9 @@ export default function RootLayout() {
                   tabBarLabel: "Cart",
                 }}
               />
-            
             </Tabs>
-            <Toast />
-            </>
           )}
+          <Toast />
         </SafeAreaView>
       </PersistGate>
     </Provider>
