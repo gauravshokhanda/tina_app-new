@@ -15,6 +15,7 @@ export default function RootLayout() {
 
   // Simulate Welcome/Home screen loading
   useEffect(() => {
+    console.log("📍 Current pathname:", pathname);
     if (pathname === "/Screens/Welcome" || pathname === "/Screens/Home") {
       setIsWelcomeLoading(true);
       setTimeout(() => {
