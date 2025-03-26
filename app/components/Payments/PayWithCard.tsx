@@ -1,6 +1,6 @@
 // PayWithCard.tsx
-import React, { useState, useEffect, useRef } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import React, { useState, useEffect, useRef, } from "react";
+import { View, Text, TextInput, TouchableOpacity, Alert ,SafeAreaView} from "react-native";
 import { useRouter, Stack, useLocalSearchParams } from "expo-router";
 import { MaterialIcons, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -70,7 +70,7 @@ export default function PayWithCard() {
   };
 
   return (
-    <View className="flex-1 bg-[#E6F2ED] px-4 py-6">
+    <SafeAreaView className="flex-1 bg-[#E6F2ED] px-4 py-6">
       <Stack.Screen options={{ headerShown: false }} />
 
       {/* Header */}
@@ -179,6 +179,6 @@ export default function PayWithCard() {
         <FontAwesome name="money" size={24} color="white" />
         <Text className="text-white font-bold ml-2">Pay Now</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 }

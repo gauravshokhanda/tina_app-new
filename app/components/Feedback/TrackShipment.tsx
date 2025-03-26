@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image,SafeAreaView } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
@@ -35,7 +35,7 @@ export default function TrackShipment() {
     const deliveredDate = latestOrder.deliveryDate; //I Used the provided delivery date
 
     return (
-        <View className="flex-1 bg-[#E6F2ED]">
+        <SafeAreaView className="flex-1 bg-[#E6F2ED]">
             <Stack.Screen options={{ headerShown: false }} />
 
             {/* Header */}
@@ -187,6 +187,6 @@ export default function TrackShipment() {
                     <Text className="text-white text-xs">Cart</Text>
                 </TouchableOpacity>
             </View>*/}
-        </View>
+        </SafeAreaView>
     );
 }

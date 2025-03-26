@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image, Modal, FlatList } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image, Modal, FlatList,SafeAreaView } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import I18n from 'i18n-js';
@@ -32,7 +32,7 @@ export default function Settings() {
   ];
 
   return (
-    <View className="flex-1 bg-[#E6F2ED]">
+    <SafeAreaView className="flex-1 bg-[#E6F2ED]">
       <Stack.Screen options={{ headerShown: false }} />
       
       {/* Background Image */}
@@ -162,7 +162,7 @@ export default function Settings() {
           </View>
         </View>
       </Modal>
-    </View>
+    </SafeAreaView>
   );
 }
     

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity, ScrollView, Alert } from "react-native";
+import { View, Text, Image, TouchableOpacity, ScrollView, Alert,SafeAreaView } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -72,7 +72,7 @@ const LoggedInAccount = () => {
     };
 
     return (
-        <View className="flex-1 bg-[#E6F2ED] px-4 pb-20">
+        <SafeAreaView className="flex-1 bg-[#E6F2ED] px-4 pb-20">
             <Stack.Screen options={{ headerShown: false }} />
 
             {/* Header */}
@@ -202,7 +202,7 @@ const LoggedInAccount = () => {
             </Animated.View>
 
             
-        </View>
+        </SafeAreaView>
     );
 };
 

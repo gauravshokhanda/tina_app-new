@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, Image, ScrollView, Alert } from "react-native";
+import { View, Text, TouchableOpacity, Image, ScrollView,SafeAreaView,Alert } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import client from "../Apis/client"; 
@@ -48,7 +48,7 @@ export default function Categories() {
       }
 
   return (
-    <View className="flex-1 bg-[#E6F2ED]">
+    <SafeAreaView className="flex-1 bg-[#E6F2ED]">
       <Stack.Screen options={{ headerShown: false }} />
       {/* Background Image */}
       <View className="absolute top-0 left-0 right-0 bottom-0 justify-center items-center">
@@ -103,6 +103,6 @@ export default function Categories() {
           ))}
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }

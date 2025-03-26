@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   FlatList,
   Alert,
+  SafeAreaView
 } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -107,8 +108,7 @@ export default function Welcome() {
   // ];
 
   return (
-    <View className="flex-1 bg-[#d8f4ed]">
-      <Stack.Screen options={{ headerShown: false }} />
+    <SafeAreaView className="flex-1 bg-[#d8f4ed] mx-2">
 
       {/* Welcome Section */}
       <View className="flex-row justify-between items-center mb-5">
@@ -128,7 +128,7 @@ export default function Welcome() {
       </View>
 
       {/* Categories Section */}
-      <View className="mb-5 px-4">
+      <View className=" px-4">
         <Text className="text-lg font-bold mb-4 pb-2">Categories</Text>
 
         <FlatList
@@ -173,7 +173,7 @@ export default function Welcome() {
       </View>
 
       <View className="mb-5 px-4">
-        <Text className="text-lg font-bold mb-4 pb-2">Products</Text>
+        <Text className="text-lg font-bold pb-2">Products</Text>
 
         <FlatList
           data={products}
@@ -218,6 +218,6 @@ export default function Welcome() {
       </View>
 
       
-    </View>
+    </SafeAreaView>
   );
 }

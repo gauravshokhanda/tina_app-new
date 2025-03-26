@@ -1,6 +1,6 @@
 // Cart.tsx
 import React from "react";
-import { View, Text, Image, TouchableOpacity, FlatList, Animated } from "react-native";
+import { View, Text, Image, TouchableOpacity, FlatList, Animated,SafeAreaView } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useSelector, useDispatch } from "react-redux";
@@ -83,7 +83,7 @@ export default function Cart() {
     );
 
     return (
-        <View className="flex-1 bg-[#E6F2ED] p-4">
+        <SafeAreaView className="flex-1 bg-[#E6F2ED]">
         <Stack.Screen options={{ headerShown: false }} />
         {/* Background Image */}
         <View className="absolute top-0 left-0 right-0 bottom-0 justify-center items-center">
@@ -133,6 +133,6 @@ export default function Cart() {
             <Text className="text-white font-semibold ml-2">Checkout</Text>
             </TouchableOpacity>
         </View>
-        </View>
+        </SafeAreaView>
     );
     }

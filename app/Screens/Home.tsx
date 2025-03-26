@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { View, Image, Text, ActivityIndicator, Animated, Easing } from "react-native";
+import { View, Image, Text, ActivityIndicator, Animated, Easing,SafeAreaView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter, Stack } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -54,7 +54,7 @@ export default function Home() {
   });
 
   return (
-    <View className="flex-1 bg-white">
+    <SafeAreaView className="flex-1 bg-white">
       <Stack.Screen options={{ headerShown: false }} />
       <LinearGradient
         colors={["#22c55e", "#a7f3d0", "#ffffff", "#ffffff"]}
@@ -79,6 +79,6 @@ export default function Home() {
           <ActivityIndicator size="large" color="#22c55e" style={{ transform: [{ scale: 1.5 }], marginTop: 40 }} />
         </Animated.View>
       </LinearGradient>
-    </View>
+    </SafeAreaView>
   );
 }

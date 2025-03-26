@@ -189,7 +189,7 @@ import Client from "../../Apis/client";
                 }}
                 innerIconStyle={{ borderWidth: 2, borderRadius: 1 }}
                 onPress={(isChecked) => {
-                console.log("Checkbox checked:", isChecked); // Debug log
+                // console.log("Checkbox checked:", isChecked); 
                 setChecked(isChecked);
                 }}
             />
