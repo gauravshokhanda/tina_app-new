@@ -8,7 +8,6 @@ import {
   ImageSourcePropType,
   ActivityIndicator,
   Alert,
-  SafeAreaView
 } from "react-native";
 import { useRouter, Stack, useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -18,7 +17,6 @@ import { setProducts } from "./productReducer";
 import { RootState, AppDispatch } from "../../Services/store";
 import client from "../../Apis/client";
 import Loading from "../../components/Loading/Loading";
-import Toast from "react-native-toast-message";
 
 interface Product {
   id: number;
@@ -34,7 +32,6 @@ interface CartItem extends Product {
 export default function Products() {
   const router = useRouter();
   const { categoryId } = useLocalSearchParams();
-  // console.log("categoryid", categoryId);
   const { token } = useSelector((state: RootState) => state?.user);
   const dispatch = useDispatch<AppDispatch>();
   const cart = useSelector(
@@ -48,92 +45,98 @@ export default function Products() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // console.log("Fetching with categoryId:", categoryId);
-        // Alert.alert("Fetching Products", `Fetching with categoryId: ${categoryId}`);
         const endpoint = categoryId
           ? `/shortapi/v1/products/${categoryId}`
           : "/shortapi/v1/products";
-        const productData = await client
-          .getProducts(endpoint, token)
-          .catch((err) => { 
-            Alert.alert("API Error", err.message);
-            return [];
-          });
+        const productData = await client.getProducts(endpoint, token);
+
+        //console.log("API Response: ", productData);
+
+        const baseURL = "https://appalachiantrashbgone.com/wp-json";
+
         const formattedProducts = productData.map((item: any) => ({
           id: item.id,
-          name: item.name || "name",
-          image: item.image && item.image.length > 0 ? { uri: item.image } : "",
+          name: item.name || "Unnamed Product",
+          image: item.image?.src
+            ? {
+                uri: item.image.src.startsWith("http")
+                  ? item.image.src
+                  : `${baseURL}${item.image.src}`,
+              }
+            : require("../../../assets/images/mountain.png"),
           price: item.price || "N/A",
         }));
-        //Alert.alert("Products Loaded", `Loaded ${formattedProducts.length} products`);
+
         setProducts(formattedProducts);
       } catch (error) {
-        Alert.alert("Error", "Failed to load products. Please try again.", [
-          {
-            text: "Retry",
-            onPress: () => fetchProducts(),
-          },
-          {
-            text: "Cancel",
-            style: "cancel",
-            onPress: () => router.push("/Screens/Welcome"),
-          },
-        ]);
+        Alert.alert("Error fetching products:");
       } finally {
         setLoading(false);
       }
     };
 
     fetchProducts();
-  }, [categoryId, token, router]);
+  }, [categoryId, token]);
 
   const handleAddToCart = useCallback(
     async (product: Product) => {
       if (!token) {
-        Toast.show({
-          type: "info",
-          text1: "Login Required",
-          text2: "Please log in to continue.",
-          visibilityTime: 3000,
-          position: "top",
-          onPress: () => router.push("/components/Users/SignIn"),
-        });
+        Alert.alert("Error", "Please log in to continue.", [
+          {
+            text: "OK",
+            onPress: () => router.push("/components/Users/SignIn"),
+          },
+        ]);
         return;
       }
-  
+
       setAddingToCart(product.id); // Set loading state for this product
-  
+
+      // Check if the product is already in the cart and get its current quantity
       const currentQuantity = getQuantity(product.id);
       const quantityToAdd = currentQuantity > 0 ? currentQuantity + 1 : 1;
-  
+
+      // Update the local cart state
       dispatch(addToCart({ ...product, quantity: 1 })); // Increment by 1
-  
+
       try {
-        const response = await client.addToCart(product.id, quantityToAdd, token);
-        
-        Toast.show({
-          type: "success",
-          text1: "Success",
-          text2: response?.message || "Product added to cart!",
-          visibilityTime: 3000,
-          position: "top",
-          onPress: () =>
-            router.push({
-              pathname: "/components/Cart/Cart",
-              params: { cart: encodeURIComponent(JSON.stringify(cart)) },
-            }),
-        });
-  
+        // Send the updated quantity to the backend
+        const response = await client.addToCart(
+          product.id,
+          quantityToAdd,
+          token
+        );
+        Alert.alert("Success", response?.message || "Product added to cart", [
+          {
+            text: "View Cart",
+            onPress: () =>
+              router.push({
+                pathname: "/components/Cart/Cart",
+                params: { cart: encodeURIComponent(JSON.stringify(cart)) },
+              }),
+          },
+          {
+            text: "Continue Shopping",
+            style: "cancel",
+          },
+        ]);
       } catch (error: any) {
-        Toast.show({
-          type: "error",
-          text1: "Error",
-          text2: error.response?.data?.message || "Failed to add to cart.",
-          visibilityTime: 3000,
-          position: "top",
-        });
-  
-        dispatch(removeFromCart(product.id)); // Revert local cart state
+        Alert.alert(
+          "Error",
+          error.response?.data?.message || "Failed to add to cart.",
+          [
+            {
+              text: "Retry",
+              onPress: () => handleAddToCart(product),
+            },
+            {
+              text: "Cancel",
+              style: "cancel",
+            },
+          ]
+        );
+        // Revert the local cart state if the API fails
+        dispatch(removeFromCart(product.id));
       } finally {
         setAddingToCart(null); // Reset loading state
       }
@@ -183,7 +186,7 @@ export default function Products() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-[#E6F2ED]">
+    <View className="flex-1 bg-[#E6F2ED]">
       <Stack.Screen options={{ headerShown: false }} />
 
       {/* Header */}
@@ -300,8 +303,6 @@ export default function Products() {
           </View>
         )}
       />
-
-
-    </SafeAreaView>
+    </View>
   );
 }
