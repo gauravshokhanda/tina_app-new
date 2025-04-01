@@ -35,6 +35,7 @@ export default function RootLayout() {
     "/components/Payments/PayWithCard",
     "/Screens/Settings",
     "/Screens/Home",
+    
   ];
 
   const shouldHideTabs = isWelcomeLoading || hiddenRoutes.some(route => pathname === route);

@@ -173,21 +173,22 @@ export default function Transactions() {
                         scrollEnabled={false}
                         renderItem={({ item }) => (
                             // Improved Card Design
-                            <View className="bg-white p-2 rounded-xl shadow-md mb-3 mx-1 flex-1 border border-gray-100">
+                            <View className="bg-white p-4 rounded-xl mb-3 mx-1 flex-1 border border-gray-100">
                                 <Image 
                                     source={item.image} 
-                                    className="w-32 h-32 mb-2 rounded-lg self-center" 
+                                    className="w-full h-40 mb-3 rounded-lg" 
                                     resizeMode="contain" 
                                 />
-                                <View className="flex-row justify-between items-center px-2">
+                                <View className="flex-1 justify-between">
                                     <View>
                                         <Text className="text-lg font-semibold text-gray-800">{item.name}</Text>
                                         <Text className="text-gray-600 text-sm">Qty: {item.quantity || 1}</Text>
                                         <Text className="text-gray-500 text-sm">Pending Payment</Text>
                                     </View>
-                                    <Text className="text-base font-bold text-green-600">
+                                    <Text className="text-lg font-bold text-green-600">
                                         ${(parseFloat(String(item.price || "0").replace(/[^0-9.]/g, '')) * (item.quantity || 1)).toFixed(2)}
                                     </Text>
+                                    
                                 </View>
                             </View>
                         )}
@@ -207,20 +208,21 @@ export default function Transactions() {
                         </View>
 
                         {/* Payment Methods */}
-                        <View className="flex-row justify-between mb-4">
-                            <TouchableOpacity className="items-center">
-                                <Image source={require("../../assets/images/paypal.jpeg")} className="w-12 h-12" />
-                                <Text className="text-sm text-gray-800 mt-1">PayPal</Text>
+                        <View className="flex-row justify-between mb-6">
+                            <TouchableOpacity className="items-center flex-1 mx-2">
+                                <Image source={require("../../assets/images/paypal.jpeg")} className="w-16 h-16 rounded-full mb-2" />
+                                <Text className="text-sm text-gray-800 font-medium">PayPal</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity className="items-center">
-                                <Image source={require("../../assets/images/alipay.jpeg")} className="w-12 h-12" />
-                                <Text className="text-sm text-gray-800 mt-1">Alipay</Text>
+                            <TouchableOpacity className="items-center flex-1 mx-2">
+                                <Image source={require("../../assets/images/alipay.jpeg")} className="w-16 h-16 rounded-full mb-2" />
+                                <Text className="text-sm text-gray-800 font-medium">Alipay</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity className="items-center">
-                                <Image source={require("../../assets/images/card.jpeg")} className="w-12 h-12" />
-                                <Text className="text-sm text-gray-800 mt-1">Cards</Text>
+                            <TouchableOpacity className="items-center flex-1 mx-2">
+                                <Image source={require("../../assets/images/card.jpeg")} className="w-16 h-16 rounded-full mb-2" />
+                                <Text className="text-sm text-gray-800 font-medium">Cards</Text>
                             </TouchableOpacity>
                         </View>
+
 
                     {/* Display Payment Details 
                         <View className="bg-white p-4 rounded-lg shadow mt-4">
@@ -231,13 +233,13 @@ export default function Transactions() {
                         </View> */}
 
                         {/* Pay Now Button */}
-                        <TouchableOpacity
-                            className="bg-[#203c2ee5] p-2 rounded-lg items-center mt-4 mb-4"
-                            onPress={() => router.push({ pathname: "/components/Payments/PayWithCard", params: { cart: encodeURIComponent(JSON.stringify(cart)) } })}
-                        >
-                            <MaterialIcons name="payment" size={18} color="white" />
-                            <Text className="text-white font-bold">Pay Now</Text>
-                        </TouchableOpacity>
+                <TouchableOpacity
+                    className="bg-[#203c2ee5] p-3 rounded-lg items-center flex-row justify-center mt-6"
+                    onPress={() => router.push({ pathname: "/components/Payments/PayWithCard", params: { cart: encodeURIComponent(JSON.stringify(cart)) } })}
+                >
+                    <MaterialIcons name="payment" size={20} color="white" />
+                    <Text className="text-white font-semibold ml-2">Pay Now</Text>
+                </TouchableOpacity>
                     </View>
                 )}
 

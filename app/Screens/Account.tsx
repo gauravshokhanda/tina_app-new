@@ -64,7 +64,7 @@ const LoggedInAccount = () => {
         try {
             await dispatch(clearUserState());
             await AsyncStorage.removeItem("user");
-            Alert.alert("Logged Out", "You have been logged out successfully.");
+                    //Alert.alert("Logged Out", "You have been logged out successfully.");
             router.replace("/components/Users/SignIn");
         } catch (error) {
             Alert.alert("Error", "Logout failed. Please try again.");

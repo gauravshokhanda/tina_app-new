@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import client from "../Apis/client";
 import type { RootState } from "../Services/store";
 import Loading from "../components/Loading/Loading";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface Product {
   id: number;
@@ -39,6 +40,8 @@ export default function Welcome() {
   const [products, setProducts] = useState<Product[]>([]);
   const [category, setCategory] = useState<Category[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+
+  
 
   useEffect(() => {
     const fetchProducts = async () => {

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { View, Text, ScrollView, TouchableOpacity, Image, Animated, Easing } from "react-native";
-import { useRouter, Stack } from "expo-router";
+import { useRouter, Stack, useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -10,6 +10,7 @@ export default function Privacy() {
     // Animation values
     const fadeAnim = new Animated.Value(0);
     const slideAnim = new Animated.Value(50);
+    const params = useLocalSearchParams();
 
     useEffect(() => {
         // Fade-in animation
@@ -27,6 +28,16 @@ export default function Privacy() {
         useNativeDriver: true,
         }).start();
     }, []);
+
+    const handleBack = () => {
+        if (params.from === "account") {
+            router.push("/Screens/Account");
+        } else if (params.from === "signin") {
+            router.push("/components/Users/SignIn");
+        } else {
+            router.back();
+        }
+    };
 
     return (
         <LinearGradient colors={["#E6F2ED", "#FFFFFF"]} className="flex-1">
@@ -47,7 +58,7 @@ export default function Privacy() {
             className="flex-row items-center justify-between px-4 mt-6"
         >
             <TouchableOpacity
-            onPress={() => router.back()}
+            onPress={handleBack}
             className="p-2 rounded-full bg-[#64CA96E5] shadow-lg"
             >
             <MaterialIcons name="arrow-left" size={24} color="white" />

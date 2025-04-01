@@ -103,11 +103,11 @@ export default function Item() {
         type: "success",
         text1: "Added to Cart",
         text2: `${product.name} has been added successfully!`,
-        visibilityTime: 2000, // Wait for 2 seconds before navigating
+        visibilityTime: 2000, 
         position: "top",
       });
   
-      // Delay navigation slightly to let the toast be visible
+      
       setTimeout(() => {
         router.push("/components/Cart/Cart");
       }, 2000);

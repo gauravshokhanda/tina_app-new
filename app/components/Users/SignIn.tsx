@@ -1,5 +1,6 @@
+// SignIn.tsx (updated)
 import React, { useState, useEffect } from "react";
-import { View, Image, Text, TextInput, TouchableOpacity, Alert,KeyboardAvoidingView,ScrollView,Platform } from "react-native";
+import { View, Image, Text, TextInput, TouchableOpacity, Alert, KeyboardAvoidingView, ScrollView, Platform, ActivityIndicator } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -26,17 +27,18 @@ export default function SignIn() {
         
         if (storedUser && !fromLogout) {
             router.push("/Screens/Welcome");
+        } else {
+            await AsyncStorage.removeItem("fromLogout");
         }
     };
 
-    
     const handleSignIn = async () => {
         if (!username || !password) {
             Alert.alert("Error", "Please enter both username and password.");
             return;
         }
 
-        setIsLoading(false);
+        setIsLoading(true);
 
         try {
             const response = await Client.login({ username, password });
@@ -47,9 +49,10 @@ export default function SignIn() {
                 dispatch(setUser(userData));
                 router.push("/Screens/Welcome");
             } else {
-                Alert.alert("Error", response.data.message || "Sign-in failed. Please try again.");
+                Alert.alert("Error", response.data?.message || "Sign-in failed. Please try again.");
             }
         } catch (error) {
+            Alert.alert("Error", "An error occurred during sign-in. Please try again.");
         } finally {
             setIsLoading(false);
         }
@@ -64,75 +67,92 @@ export default function SignIn() {
                 contentContainerStyle={{ flexGrow: 1 }} 
                 keyboardShouldPersistTaps="handled"
             >
-        <View className="flex-1 px-6">
-            <Stack.Screen options={{ headerShown: false }} />
+                <View className="flex-1 px-6">
+                    <Stack.Screen options={{ headerShown: false }} />
 
-            <TouchableOpacity
-                onPress={() => router.push('./SignUp')}
-                className="w-10 h-10 rounded-full bg-[#64CA96E5] flex items-center justify-center mt-6"
-            >
-                <MaterialIcons name="arrow-left" size={24} color="white" />
-            </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => router.push('/components/Users/SignUp')}
+                        className="w-10 h-10 rounded-full bg-[#64CA96E5] flex items-center justify-center mt-6"
+                    >
+                        <MaterialIcons name="arrow-left" size={24} color="white" />
+                    </TouchableOpacity>
 
-            <View className="flex-1 justify-center gap-8">
-                <View className="items-center">
-                    <Image source={require("../../../assets/images/loginBear.png")} className="w-60 h-60" resizeMode="contain" />
-                </View>
+                    <View className="flex-1 justify-center gap-8">
+                        <View className="items-center">
+                            <Image source={require("../../../assets/images/loginBear.png")} className="w-60 h-60" resizeMode="contain" />
+                        </View>
 
-                <Text className="text-center text-green-500 text-xl font-bold px-6">
-                    Just one Step To Clean..
-                </Text>
-
-                <TextInput
-                    className="bg-gray-100 p-6 rounded-lg"
-                    placeholder="Username" 
-                    value={username} 
-                    onChangeText={setUsername}  
-                    autoCapitalize="none"
-                    placeholderTextColor={"gray"}
-                />
-                <TextInput
-                    className="bg-gray-100 p-6 rounded-lg"
-                    placeholder="Password"
-                    secureTextEntry
-                    value={password}
-                    onChangeText={setPassword}
-                    placeholderTextColor={"gray"}
-                />
-
-                <TouchableOpacity
-                    onPress={handleSignIn}
-                    className="bg-green-900 p-4 rounded-full items-center"
-                    disabled={isLoading}
-                >
-                    <Text className="text-white text-lg font-semibold">
-                        {isLoading ? "Signing In..." : "Sign In"}
-                    </Text>
-                </TouchableOpacity>
-
-                <View>
-                    <Text className="text-center text-gray-400 mb-3">Forgot your password?</Text>
-                    <Text className="text-center text-gray-500 mb-2">
-                        Don't have an account yet?{" "}
-                        <Text onPress={() => router.push('./SignedUp')} className="text-green-500 font-bold">
-                            Sign Up
+                        <Text className="text-center text-green-500 text-xl font-bold px-6">
+                            Just one Step To Clean..
                         </Text>
-                    </Text>
 
-                    <Text className="text-center text-gray-500">
-                        <Text className="text-sm text-center">By logging in or registering, you agree to our</Text>{" "}
-                        <Text onPress={() => router.push('/Screens/Terms')} className="text-green-500 font-bold text-sm">
-                            Terms of Service
-                        </Text>{" "}
-                        and{" "}
-                        <Text onPress={() => router.push('/Screens/Privacy')} className="text-green-500 font-bold text-sm">
-                            Privacy Policy
-                        </Text>
-                    </Text>
+                        <TextInput
+                            className="bg-gray-100 p-6 rounded-lg"
+                            placeholder="Username" 
+                            value={username} 
+                            onChangeText={setUsername}  
+                            autoCapitalize="none"
+                            placeholderTextColor={"gray"}
+                        />
+                        <TextInput
+                            className="bg-gray-100 p-6 rounded-lg"
+                            placeholder="Password"
+                            secureTextEntry
+                            value={password}
+                            onChangeText={setPassword}
+                            placeholderTextColor={"gray"}
+                        />
+
+                        <TouchableOpacity
+                            onPress={handleSignIn}
+                            className="bg-green-900 p-4 rounded-full items-center"
+                            disabled={isLoading}
+                        >
+                            {isLoading ? (
+                                <ActivityIndicator size="small" color="white" />
+                            ) : (
+                                <Text className="text-white text-lg font-semibold">Sign In</Text>
+                            )}
+                        </TouchableOpacity>
+
+                        <View>
+                            <Text className="text-center text-gray-400 mb-3">Forgot your password?</Text>
+                            <Text className="text-center text-gray-500 mb-2">
+                                Don't have an account yet?{" "}
+                                <Text 
+                                    onPress={() => router.push('/components/Users/SignUp')} 
+                                    className="text-green-500 font-bold"
+                                >
+                                    Sign Up
+                                </Text>
+                            </Text>
+
+                            <Text className="text-center text-gray-500">
+                                <Text className="text-sm text-center">By logging in or registering, you agree to our</Text>{" "}
+                                <Text 
+                                    onPress={() => router.push({
+                                        pathname: '/Screens/Terms',
+                                        params: { from: "signin" }
+                                    })} 
+                                    className="text-green-500 font-bold text-sm"
+                                >
+                                    Terms of Service
+                                </Text>{" "}
+                                and{" "}
+                                <Text 
+                                    onPress={() => router.push({
+                                        pathname: '/Screens/Privacy',
+                                        params: { from: "signin" }
+                                    })} 
+                                    className="text-green-500 font-bold text-sm"
+                                >
+                                    Privacy Policy
+                                </Text>
+                            </Text>
+                        </View>
+                    </View>
                 </View>
-            </View>
-        </View>
-        </ScrollView>
+            </ScrollView>
         </KeyboardAvoidingView>
     );
 }

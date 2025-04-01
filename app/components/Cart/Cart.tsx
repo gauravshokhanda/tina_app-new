@@ -98,14 +98,14 @@ export default function Cart() {
         <View className="flex-row items-center justify-between py-4">
             <TouchableOpacity 
             onPress={() => router.push("../../components/Products/Products")} 
-            className="p-2 rounded-full bg-[#64CA96E5]"
+            className="p-2 rounded-full bg-[#64CA96E5] ml-2"
             >
             <MaterialIcons name="arrow-left" size={20} color="white" />
             </TouchableOpacity>
             <Text className="text-lg font-semibold text-gray-700">Shopping Cart</Text>
             <Image 
             source={require("../../../assets/images/loginBear.png")} 
-            className="w-10 h-10 rounded-full" 
+            className="w-10 h-10 rounded-full mr-2" 
             />
         </View>
 
