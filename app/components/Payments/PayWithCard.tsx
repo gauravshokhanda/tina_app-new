@@ -34,7 +34,7 @@ export default function PayWithCard() {
 
   // Function to format expiry date with auto "/"
   const formatExpiryDate = (text: string) => {
-    const cleaned = text.replace(/\D/g, ""); // Remove non-digits
+    const cleaned = text.replace(/\D/g, ""); 
     let formatted = cleaned;
 
     if (cleaned.length > 2) {
@@ -145,7 +145,7 @@ export default function PayWithCard() {
                 keyboardType="numeric"
                 value={expiryDate}
                 onChangeText={formatExpiryDate}
-                maxLength={5} // MM/YY including "/"
+                maxLength={5} 
                 placeholderTextColor="#A0A0A0"
               />
             </View>

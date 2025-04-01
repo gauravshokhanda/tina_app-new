@@ -34,7 +34,10 @@ export default function Privacy() {
             router.push("/Screens/Account");
         } else if (params.from === "signin") {
             router.push("/components/Users/SignIn");
-        } else {
+        } else if (params.from === "SignedUp") {
+            router.push("/components/Users/SignedUp");
+        }
+        else {
             router.back();
         }
     };

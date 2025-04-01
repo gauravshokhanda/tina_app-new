@@ -167,7 +167,10 @@ import Client from "../../Apis/client";
             >
             <Text style={{ color: "gray", fontSize: 14 }}>I have read the </Text>
             <Text
-                onPress={() => router.push("/Screens/Privacy")}
+                onPress={() => router.push({
+                    pathname: '/Screens/Privacy',
+                    params: { from: "SignedUp" }
+                })}
                 style={{
                 color: "green",
                 fontSize: 14,

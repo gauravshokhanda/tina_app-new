@@ -120,7 +120,7 @@ export default function SignIn() {
                             <Text className="text-center text-gray-500 mb-2">
                                 Don't have an account yet?{" "}
                                 <Text 
-                                    onPress={() => router.push('/components/Users/SignUp')} 
+                                    onPress={() => router.push('/components/Users/SignedUp')} 
                                     className="text-green-500 font-bold"
                                 >
                                     Sign Up
