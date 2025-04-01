@@ -69,14 +69,7 @@ import Client from "../../Apis/client";
     };
 
     return (
-        <ScrollView
-        contentContainerStyle={{
-            flexGrow: 1,
-            justifyContent: "space-between",
-            padding: 20,
-            backgroundColor: "white",
-        }}
-        >
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }} className="p-5 bg-gray-100">
         <View>
             <Stack.Screen options={{ headerShown: false }} />
 
@@ -96,23 +89,15 @@ import Client from "../../Apis/client";
             </TouchableOpacity>
 
             {/* Logo */}
-            <View style={{ alignItems: "center", marginBottom: 20 }}>
+            <View className="mt-20 items-center">
             <Image
-                source={require("../../../assets/images/loginBear.png")}
-                style={{ width: 150, height: 150, resizeMode: "contain" }}
+                source={require("../../../assets/images/HomeScreen.png")}
+                style={{ width: 170, height: 170, resizeMode: "contain" }}
             />
             </View>
 
             {/* Title */}
-            <Text
-            style={{
-                color: "rgba(45, 204, 112, 1)",
-                fontSize: 24,
-                fontWeight: "bold",
-                textAlign: "center",
-                marginBottom: 20,
-            }}
-            >
+            <Text className="text-green-600 text-3xl font-bold text-center my-5">
             Create Your Account
             </Text>
 
@@ -162,40 +147,16 @@ import Client from "../../Apis/client";
             </View>
 
             {/* Privacy Policy */}
-            <View
-            style={{ flexDirection: "row", alignItems: "center", marginBottom: 20 }}
-            >
-            <Text style={{ color: "gray", fontSize: 14 }}>I have read the </Text>
-            <Text
-                onPress={() => router.push({
-                    pathname: '/Screens/Privacy',
-                    params: { from: "SignedUp" }
-                })}
-                style={{
-                color: "green",
-                fontSize: 14,
-                textDecorationLine: "underline",
-                }}
-            >
-                privacy policy
-            </Text>
-            <Text style={{ color: "gray", fontSize: 14, marginRight: 4 }}>.</Text>
-            <BouncyCheckbox
-                size={14}
-                fillColor="green"
-                iconStyle={{
-                borderColor: "green",
-                borderRadius: 2,
-                borderWidth: 2,
-                width: 15,
-                height: 15,
-                }}
-                innerIconStyle={{ borderWidth: 2, borderRadius: 1 }}
-                onPress={(isChecked) => {
-                // console.log("Checkbox checked:", isChecked); 
-                setChecked(isChecked);
-                }}
-            />
+            <View className="flex-row items-center mb-5">
+                <Text className="text-gray-600 text-sm">I have read the </Text>
+                <Text onPress={() => router.push({ pathname: '/Screens/Privacy', params: { from: "SignedUp" } })} className="text-green-600 text-sm underline ml-1 mr-2">privacy policy</Text>
+                <BouncyCheckbox
+                    size={18}
+                    fillColor="green"
+                    iconStyle={{ borderColor: "green", borderRadius: 2, borderWidth: 2 }}
+                    innerIconStyle={{ borderWidth: 2, borderRadius: 1 }}
+                    onPress={(isChecked) => setChecked(isChecked)}
+                />
             </View>
 
             {/* Sign Up Button */}

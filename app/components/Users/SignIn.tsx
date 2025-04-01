@@ -77,9 +77,9 @@ export default function SignIn() {
                         <MaterialIcons name="arrow-left" size={24} color="white" />
                     </TouchableOpacity>
 
-                    <View className="flex-1 justify-center gap-8">
+                    <View className="flex-1 justify-center gap-6">
                         <View className="items-center">
-                            <Image source={require("../../../assets/images/loginBear.png")} className="w-60 h-60" resizeMode="contain" />
+                            <Image source={require("../../../assets/images/HomeScreen.png")} className="w-60 h-60" resizeMode="contain" />
                         </View>
 
                         <Text className="text-center text-green-500 text-xl font-bold px-6">
