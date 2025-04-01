@@ -1,6 +1,6 @@
 // PayWithCard.tsx
 import React, { useState, useEffect, useRef, } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert ,SafeAreaView} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, Alert ,SafeAreaView, Animated} from "react-native";
 import { useRouter, Stack, useLocalSearchParams } from "expo-router";
 import { MaterialIcons, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,15 +16,35 @@ export default function PayWithCard() {
   const [cardNumber, setCardNumber] = useState("");
   const [expiryDate, setExpiryDate] = useState("");
   const [cvv, setCvv] = useState("");
-  const isMounted = useRef(false); // Track if component is mounted
+  const isMounted = useRef(false);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
 
   // Set isMounted to true when component mounts, false when unmounts
   useEffect(() => {
     isMounted.current = true;
+    Animated.timing(fadeAnim, {
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
+    }).start();
     return () => {
       isMounted.current = false;
     };
   }, []);
+
+  // Function to format expiry date with auto "/"
+  const formatExpiryDate = (text: string) => {
+    const cleaned = text.replace(/\D/g, ""); // Remove non-digits
+    let formatted = cleaned;
+
+    if (cleaned.length > 2) {
+      formatted = `${cleaned.slice(0, 2)}/${cleaned.slice(2, 4)}`;
+    } else {
+      formatted = cleaned;
+    }
+
+    setExpiryDate(formatted);
+  };
 
   const handlePayNow = () => {
     if (!cardNumber || !expiryDate || !cvv) {
@@ -99,52 +119,56 @@ export default function PayWithCard() {
       </View>
 
       {/* Card Input Fields */}
-      <View className="bg-white p-4 rounded-lg shadow">
-        {/* Card Number */}
-        <Text className="text-gray-600 mb-1">Card Number</Text>
-        <View className="flex-row items-center border border-gray-300 p-2 rounded-lg mb-4">
-          <MaterialIcons name="credit-card" size={24} color="gray" />
+      <Animated.View style={{ opacity: fadeAnim }} className="mx-4 bg-white p-6 rounded-2xl shadow-lg">
+        <Text className="text-gray-700 font-medium mb-2">Card Number</Text>
+        <View className="flex-row items-center border border-gray-200 p-3 rounded-xl mb-4 bg-gray-50">
+          <MaterialIcons name="credit-card" size={24} color="#64CA96" />
           <TextInput
-            className="flex-1 ml-2"
+            className="flex-1 ml-3 text-gray-800"
             placeholder="1234 5678 9012 3456"
             keyboardType="numeric"
             value={cardNumber}
             onChangeText={setCardNumber}
+            maxLength={16}
           />
         </View>
 
-        {/* Expiry Date & CVV */}
+        {/* Expiry Date */}
         <View className="flex-row justify-between">
           <View className="w-[48%]">
-            <Text className="text-gray-600 mb-1">Expiry Date</Text>
-            <View className="flex-row items-center border border-gray-300 p-2 rounded-lg">
-              <MaterialIcons name="date-range" size={24} color="gray" />
+            <Text className="text-gray-700 font-medium mb-2">Expiry Date</Text>
+            <View className="flex-row items-center border border-gray-200 p-3 rounded-xl bg-gray-50">
+              <MaterialIcons name="date-range" size={24} color="#64CA96" />
               <TextInput
-                className="flex-1 ml-2"
+                className="flex-1 ml-3 text-gray-800"
                 placeholder="MM/YY"
                 keyboardType="numeric"
                 value={expiryDate}
-                onChangeText={setExpiryDate}
+                onChangeText={formatExpiryDate}
+                maxLength={5} // MM/YY including "/"
+                placeholderTextColor="#A0A0A0"
               />
             </View>
+            {/*CVV Input Field*/ }
           </View>
-
           <View className="w-[48%]">
-            <Text className="text-gray-600 mb-1">CVV</Text>
-            <View className="flex-row items-center border border-gray-300 p-2 rounded-lg">
-              <MaterialIcons name="lock" size={24} color="gray" />
+            <Text className="text-gray-700 font-medium mb-2">CVV</Text>
+            <View className="flex-row items-center border border-gray-200 p-3 rounded-xl bg-gray-50">
+              <MaterialIcons name="lock" size={24} color="#64CA96" />
               <TextInput
-                className="flex-1 ml-2"
+                className="flex-1 ml-3 text-gray-800"
                 placeholder="***"
                 keyboardType="numeric"
                 secureTextEntry
                 value={cvv}
                 onChangeText={setCvv}
+                maxLength={3}
+                placeholderTextColor="#A0A0A0"
               />
             </View>
           </View>
         </View>
-      </View>
+      </Animated.View>
 
       {/* Other Payment Options */}
       <Text className="text-gray-700 text-base mt-6 mb-2">Other Payment Options</Text>

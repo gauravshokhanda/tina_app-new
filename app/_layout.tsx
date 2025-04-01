@@ -32,7 +32,7 @@ export default function RootLayout() {
     "/Screens/Terms",
     "/components/Feedback/ContactSeller",
     "/components/Feedback/TrackShipment",
-    "/components/Payments/PayWithCard",
+    //"/components/Payments/PayWithCard",
     "/Screens/Settings",
     "/Screens/Home",
     
