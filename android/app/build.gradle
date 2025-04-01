@@ -95,11 +95,11 @@ android {
         versionName "1.0.0"
     }
     signingConfigs {
-        debug {
-            storeFile file('debug.keystore')
-            storePassword 'android'
-            keyAlias 'androiddebugkey'
-            keyPassword 'android'
+        release {
+            storeFile file('my-release-key.keystore')
+            storePassword 'gagan123'
+            keyAlias 'my-key-alias'
+            keyPassword 'gagan123'
         }
     }
     buildTypes {
