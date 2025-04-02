@@ -1,6 +1,5 @@
-// PayWithCard.tsx
-import React, { useState, useEffect, useRef, } from "react";
-import { View, Text, TextInput, TouchableOpacity, Alert ,SafeAreaView, Animated} from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { View, Text, TextInput, TouchableOpacity, Alert, SafeAreaView, Animated } from "react-native";
 import { useRouter, Stack, useLocalSearchParams } from "expo-router";
 import { MaterialIcons, FontAwesome, Ionicons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +18,6 @@ export default function PayWithCard() {
   const isMounted = useRef(false);
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  // Set isMounted to true when component mounts, false when unmounts
   useEffect(() => {
     isMounted.current = true;
     Animated.timing(fadeAnim, {
@@ -32,9 +30,8 @@ export default function PayWithCard() {
     };
   }, []);
 
-  // Function to format expiry date with auto "/"
   const formatExpiryDate = (text: string) => {
-    const cleaned = text.replace(/\D/g, ""); 
+    const cleaned = text.replace(/\D/g, "");
     let formatted = cleaned;
 
     if (cleaned.length > 2) {
@@ -67,24 +64,26 @@ export default function PayWithCard() {
       return;
     }
 
-    // Only proceed if component is mounted
     if (isMounted.current) {
-      // Dispatch payment details to Redux store
       dispatch(setPaymentDetails({ cardNumber, expiryDate, cvv }));
-
-      // Create order object
+      //console.log("Raw Cart in PayWithCard.tsx:", cart);
+  
+      // Sanitize cart: Convert string prices to numbers, default to 0 if invalid
+      const sanitizedCart = cart.map(item => ({
+        ...item,
+        price: typeof item.price === "string" ? parseFloat(item.price) : (typeof item.price === "number" ? item.price : 0),
+      }));
+      //console.log("Sanitized Cart in PayWithCard.tsx:", sanitizedCart);
+  
       const order = {
         orderId: "35325565555788",
         shippingAddress: "456 Creative Lane, San Francisco, CA 94102, United States",
-        items: cart,
+        items: sanitizedCart,
         orderDate: new Date().toISOString(),
         deliveryDate: new Date(new Date().setDate(new Date().getDate() + 1)).toISOString(),
       };
-
-      // Dispatch order to Redux store
+  
       dispatch(addOrder(order));
-
-      // Navigate to MyOrders page
       router.push("/components/Orders/MyOrders");
     }
   };
@@ -102,11 +101,6 @@ export default function PayWithCard() {
           Pay with <Text className="text-green-600">Card</Text>
         </Text>
         <Ionicons name="card-outline" size={24} color="#64CA96E5" />
-      </View>
-
-      {/* Display Total Amount to Pay If need then add the display */}
-      <View>
-        
       </View>
 
       {/* Payment Methods */}
@@ -133,7 +127,6 @@ export default function PayWithCard() {
           />
         </View>
 
-        {/* Expiry Date */}
         <View className="flex-row justify-between">
           <View className="w-[48%]">
             <Text className="text-gray-700 font-medium mb-2">Expiry Date</Text>
@@ -145,11 +138,10 @@ export default function PayWithCard() {
                 keyboardType="numeric"
                 value={expiryDate}
                 onChangeText={formatExpiryDate}
-                maxLength={5} 
+                maxLength={5}
                 placeholderTextColor="#A0A0A0"
               />
             </View>
-            {/*CVV Input Field*/ }
           </View>
           <View className="w-[48%]">
             <Text className="text-gray-700 font-medium mb-2">CVV</Text>

@@ -61,16 +61,29 @@ export default function Cart() {
     // Card Design
     const renderItem = ({ item }: { item: any }) => (
         <Animated.View 
-        style={{ opacity: fadeAnim }}
-        className="bg-white p-3 m-2 rounded-lg flex-row items-center justify-between shadow-md gap-x-4 border border-gray-100"
+        style={{ 
+            opacity: fadeAnim,
+            transform: [{ translateY: fadeAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: [20, 0]
+            }) }]
+        }}
+        className="bg-white p-4 m-3 rounded-xl flex-row items-center justify-between shadow-lg border border-gray-50 overflow-hidden relative"
         >
-        <Image 
-            source={item.image} 
-            className="w-16 h-16 rounded-md bg-gray-50" 
-            resizeMode="contain" 
-        />
+    <View className="absolute inset-0 bg-gradient-to-r from-gray-50/50 to-white/50" />
+                
+                {/* Image Container */}
+                <View className="relative">
+                    <Image 
+                        source={item.image} 
+                        className="w-20 h-20 rounded-lg bg-gray-100"
+                        resizeMode="contain" 
+                    />
+                </View>
         <View className="flex-1 ml-2">
-            <Text className="text-black font-semibold">{item.name}</Text>
+        <Text className="text-black font-semibold text-lg tracking-tight">
+                        {item.name}
+                    </Text>
             <Text className="text-gray-700 mt-1">${item.price} x {item.quantity || 1}</Text>
         </View>
         <TouchableOpacity 
@@ -119,20 +132,20 @@ export default function Cart() {
         {/*  Checkout Section */}
         <View className="flex-row justify-between bg-[#64CA96E5] p-4 mt-4 rounded-lg mb-20 items-center shadow-md">
             <View>
-            <Text className="text-white text-sm">Total ({cart.length} items)</Text>
-            <Text className="text-white text-lg font-bold">${totalPrice.toFixed(2)}</Text>
+                    <Text className="text-white text-sm">Total ({cart.length} items)</Text>
+                    <Text className="text-white text-lg font-bold">${totalPrice.toFixed(2)}</Text>
             </View>
             <TouchableOpacity
-            className="bg-[#045B51EE] px-6 py-3 rounded-lg flex-row items-center shadow-md"
-            onPress={() => router.push({ 
-                pathname: "../../constants/Transactions", 
-                params: { cart: encodeURIComponent(JSON.stringify(cart)) }
-            })}
+                className="bg-[#045B51EE] px-6 py-3 rounded-lg flex-row items-center shadow-md"
+                    onPress={() => router.push({ 
+                        pathname: "../../constants/Transactions", 
+                        params: { cart: encodeURIComponent(JSON.stringify(cart)) }
+                })}
             >
             <MaterialIcons name="shopping-cart-checkout" size={20} color="white" />
-            <Text className="text-white font-semibold ml-2">Checkout</Text>
+                <Text className="text-white font-semibold ml-2">Checkout</Text>
             </TouchableOpacity>
         </View>
-        </SafeAreaView>
+    </SafeAreaView>
     );
-    }
+}

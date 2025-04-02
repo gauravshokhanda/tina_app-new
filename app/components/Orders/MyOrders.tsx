@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, ScrollView, TouchableOpacity, Image,SafeAreaView } from "react-native";
+import { View, Text, ScrollView, TouchableOpacity, Image, SafeAreaView } from "react-native";
 import { useRouter, Stack } from "expo-router";
 import { MaterialIcons, FontAwesome, Ionicons, Entypo } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
@@ -11,11 +11,18 @@ export default function MyOrders() {
   const orders = useSelector((state: RootState) => state.order.orders);
   const latestOrder = orders.length > 0 ? orders[orders.length - 1] : null;
 
+  console.log("Latest Order Items in MyOrders.tsx:", latestOrder?.items);
+
   // Tax Calculation (Assuming 8% Sales Tax)
   const taxRate = 0.08;
-  const subtotal = latestOrder ? latestOrder.items.reduce((total, item: any) => total + item.price * (item.quantity || 1), 0) : 0;
+  const subtotal = latestOrder
+    ? latestOrder.items.reduce((total, item: any) => {
+        const price = typeof item.price === "number" ? item.price : 0; 
+        return total + price * (item.quantity || 1);
+      }, 0)
+    : 0;
   const tax = subtotal * taxRate;
-  const total = subtotal + tax; 
+  const total = subtotal + tax;
 
   if (!latestOrder) {
     return (
@@ -74,48 +81,53 @@ export default function MyOrders() {
             <Text className="text-lg font-bold text-gray-800 ml-2">Order Items</Text>
           </View>
           {latestOrder.items.length > 0 ? (
-                        latestOrder.items.map((item, index) => (
-                            <Animated.View
-                                key={index}
-                                entering={FadeIn.duration(500).delay(index * 100)}
-                                layout={Layout.delay(100)}
-                                className="flex-row items-center py-3 border-b border-gray-200"
-                            >
-                                <Image source={item.image} className="w-16 h-16 rounded-lg" />
-                                <View className="flex-1 ml-4">
-                                    <Text className="text-gray-800 font-medium">{item.name}</Text>
-                                    <Text className="text-gray-600">${item.price.toFixed(2)} x {item.quantity || 1}</Text>
-                                </View>
-                            </Animated.View>
-                        ))
-                    ) : (
+            latestOrder.items.map((item, index) => {
+              const price = typeof item.price === "number" ? item.price : 0; 
+              return (
+                <Animated.View
+                  key={index}
+                  entering={FadeIn.duration(500).delay(index * 100)}
+                  layout={Layout.delay(100)}
+                  className="flex-row items-center py-3 border-b border-gray-200"
+                >
+                  <Image source={item.image} className="w-16 h-16 rounded-lg" />
+                  <View className="flex-1 ml-4">
+                    <Text className="text-gray-800 font-medium">{item.name}</Text>
+                    <Text className="text-gray-600">
+                      ${price.toFixed(2)} x {item.quantity || 1}
+                    </Text>
+                  </View>
+                </Animated.View>
+              );
+            })
+          ) : (
             <Text className="text-gray-600 text-center my-2">No items in this order</Text>
           )}
         </Animated.View>
 
         {/* Pricing Details with Tax Calculation */}
         <Animated.View
-                    entering={FadeInUp.duration(500).delay(300)}
-                    layout={Layout.delay(100)}
-                    className="bg-white p-4 rounded-lg shadow mb-4"
-                >
-                    <View className="flex-row items-center mb-2">
-                        <MaterialIcons name="attach-money" size={24} color="#64CA96E5" />
-                        <Text className="text-lg font-bold text-gray-800 ml-2">Pricing Details</Text>
-                    </View>
-                    <View className="flex-row justify-between items-center mb-2">
-                        <Text className="text-gray-600">Subtotal</Text>
-                        <Text className="text-gray-800">${subtotal.toFixed(2)}</Text>
-                    </View>
-                    <View className="flex-row justify-between items-center mb-2">
-                        <Text className="text-gray-600">Sales Tax (8%)</Text>
-                        <Text className="text-gray-800">${tax.toFixed(2)}</Text>
-                    </View>
-                    <View className="flex-row justify-between items-center mb-2">
-                        <Text className="text-gray-600 font-bold">Total</Text>
-                        <Text className="text-gray-800 font-bold">${total.toFixed(2)}</Text>
-                    </View>
-                </Animated.View>
+          entering={FadeInUp.duration(500).delay(300)}
+          layout={Layout.delay(100)}
+          className="bg-white p-4 rounded-lg shadow mb-4"
+        >
+          <View className="flex-row items-center mb-2">
+            <MaterialIcons name="attach-money" size={24} color="#64CA96E5" />
+            <Text className="text-lg font-bold text-gray-800 ml-2">Pricing Details</Text>
+          </View>
+          <View className="flex-row justify-between items-center mb-2">
+            <Text className="text-gray-600">Subtotal</Text>
+            <Text className="text-gray-800">${subtotal.toFixed(2)}</Text>
+          </View>
+          <View className="flex-row justify-between items-center mb-2">
+            <Text className="text-gray-600">Sales Tax (8%)</Text>
+            <Text className="text-gray-800">${tax.toFixed(2)}</Text>
+          </View>
+          <View className="flex-row justify-between items-center mb-2">
+            <Text className="text-gray-600 font-bold">Total</Text>
+            <Text className="text-gray-800 font-bold">${total.toFixed(2)}</Text>
+          </View>
+        </Animated.View>
 
         {/* Order Details */}
         <Animated.View
@@ -144,7 +156,7 @@ export default function MyOrders() {
         {/* Buttons */}
         <View className="flex-row justify-between">
           <TouchableOpacity
-            onPress={() => router.push("/components/Feedback/ContactSeller")} // Navigate to ContactSeller page
+            onPress={() => router.push("/components/Feedback/ContactSeller")}
             className="bg-[#274a38e5] p-4 rounded-lg items-center flex-1 flex-row justify-center mr-2"
           >
             <FontAwesome name="whatsapp" size={24} color="white" />
