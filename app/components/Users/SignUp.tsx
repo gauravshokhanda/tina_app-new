@@ -5,7 +5,7 @@ import { Provider, useDispatch } from "react-redux";
 import { store } from "../../Services/store";
 import { setUser } from "./userReducer";
 import type { AppDispatch } from "../../Services/store";
-import Client from "../../Apis/client";
+import client from "../../Apis/client";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Loading from "../../components/Loading/Loading";
 import Animated, { 
@@ -79,17 +79,17 @@ function SignupScreen() {
         <View className="bg-green-500 h-3/5 w-full rounded-b-[60px] items-center justify-center relative mt-5">
           <Animated.View style={animatedImageStyle}>
             <Image
-              source={require("../../../assets/images/loginBear.png")}
-              className="w-70 h-70 mt-3"
+              source={require("../../../assets/images/HomeScreen.png")}
+              className="w-60 h-60 mt-3"
               resizeMode="contain"
             />
           </Animated.View>
 
           <Animated.View style={animatedTitleStyle}>
-            <Text className="text-white text-2xl font-extrabold tracking-wide shadow-md">
+            <Text className="text-white text-3xl font-extrabold tracking-wide shadow-md mt-2">
               Appalachian
             </Text>
-            <Text className="text-white text-2xl font-extrabold tracking-wide shadow-md">
+            <Text className="text-white text-3xl font-extrabold tracking-wide shadow-md">
               Trash-B-Gone
             </Text>
           </Animated.View>
