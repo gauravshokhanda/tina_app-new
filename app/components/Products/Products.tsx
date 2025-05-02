@@ -50,23 +50,20 @@ export default function Products() {
           : "/shortapi/v1/products";
         const productData = await client.getProducts(endpoint, token);
 
-        //console.log("API Response: ", productData);
+        console.log("API Response: ", productData);
 
         const baseURL = "https://appalachiantrashbgone.com/wp-json";
 
         const formattedProducts = productData.map((item: any) => ({
           id: item.id,
           name: item.name || "Unnamed Product",
-          image: item.image?.src
-            ? {
-                uri: item.image.src.startsWith("http")
-                  ? item.image.src
-                  : `${baseURL}${item.image.src}`,
-              }
+          image: item.image
+            ? { uri: item.image }
             : require("../../../assets/images/mountain.png"),
           price: item.price || "N/A",
         }));
-
+        
+        console.log("formatted products: ", formattedProducts);
         setProducts(formattedProducts);
       } catch (error) {
         Alert.alert("Error fetching products:");
